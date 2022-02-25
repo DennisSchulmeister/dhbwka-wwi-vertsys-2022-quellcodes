@@ -1,0 +1,19 @@
+{
+  "name": "adressbuch-backend",
+  "version": "1.0.0",
+  "description": "Adressbuch: Backend",
+  "author": "Dennis Schulmeister-Zimolong",
+  "license": "CC-BY-4.0",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "mongodb": "^4.4.0",
+    "restify": "^8.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
