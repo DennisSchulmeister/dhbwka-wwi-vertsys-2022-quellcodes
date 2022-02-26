@@ -22,7 +22,15 @@ class DatabaseFactory {
         await this.client.connect();
         this.database = this.client.db("adressbook");
 
-        // Demodaten anlegen
+        await this._createDemoData();
+    }
+
+    /**
+     * Hilfsmethode zum Anlagen von Demodaten. Würde man so in einer
+     * Produktivanwendung natürlich nicht machen, aber so sehen wir
+     * wenigstens gleich ein paar Daten.
+     */
+    async _createDemoData() {
         let addresses = this.database.collection("addresses");
 
         if (await addresses.estimatedDocumentCount() === 0) {

@@ -33,12 +33,20 @@ server.pre((req, res, next) => {
 });
 
 // CORS-Header setzen, um Zugriffe von anderen URLs außer der Backend-URL zuzulassen.
+// Außerdem OPTIONS-Anfragen (sog. CORS-Preflight) immer mit Status 200 beantworten,
+// damit die Browser ändernde Aufrufe tatsächlich durchführen.
 server.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", req.header("Access-Control-Request-Method"));
     res.header("Access-Control-Allow-Headers", req.header("Access-Control-Request-Headers"));
     return next();
 });
+
+server.opts("*", (req, res, next) => {
+    res.status(200);
+    res.send({});
+    next();
+})
 
 // Sonstige Restify-Plugins aktivieren
 server.use(restify.plugins.acceptParser(server.acceptable));
@@ -52,8 +60,8 @@ server.use(restify.plugins.throttle({burst: 100, rate: 50, ip: true}));
 server.use(restify.plugins.conditionalRequest());
 
 // HTTP-Controller registrieren
-new RootController(server);
-new AdressController(server);
+new RootController(server, "/");
+new AdressController(server, "/address");
 
 // Server tatsächlich starten
 server.listen(config.port, config.host, function() {

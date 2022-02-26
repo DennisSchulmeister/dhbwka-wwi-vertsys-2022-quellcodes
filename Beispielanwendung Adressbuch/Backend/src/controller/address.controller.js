@@ -11,22 +11,22 @@ import {wrapAsyncHandler} from "../utils.js";
 export default class AddressController {
     /**
      * Konstruktor. Hier werden die URL-Handler registrert.
+     *
      * @param {Object} server Restify Serverinstanz
+     * @param {String} prefix Gemeinsamer Prefix aller URLs
      */
-    constructor(server) {
+    constructor(server, prefix) {
         this._addressService = new AddressService();
 
         // Collection: Adressen
-        server.get("/address", wrapAsyncHandler(this.searchAddresses.bind(this)));
-        server.post("/address", wrapAsyncHandler(this.createAddress.bind(this)));
-        server.opts("/address", this.corsPreflight);
+        server.get(prefix, wrapAsyncHandler(this.searchAddresses.bind(this)));
+        server.post(prefix, wrapAsyncHandler(this.createAddress.bind(this)));
 
         // Entity: Adresse
-        server.get("/address/:id", wrapAsyncHandler(this.readAddress.bind(this)));
-        server.put("/address/:id", wrapAsyncHandler(this.updateAddress.bind(this)));
-        server.patch("/address/:id", wrapAsyncHandler(this.updateAddress.bind(this)));
-        server.del("/address/:id", wrapAsyncHandler(this.deleteAddress.bind(this)));
-        server.opts("/address/:id", this.corsPreflight);
+        server.get(prefix + "/:id", wrapAsyncHandler(this.readAddress.bind(this)));
+        server.put(prefix + "/:id", wrapAsyncHandler(this.updateAddress.bind(this)));
+        server.patch(prefix + "/:id", wrapAsyncHandler(this.updateAddress.bind(this)));
+        server.del(prefix + "/:id", wrapAsyncHandler(this.deleteAddress.bind(this)));
     }
 
     /**
@@ -70,15 +70,8 @@ export default class AddressController {
      */
     async deleteAddress(req, res, next) {
         await this._addressService.deleteAddress(req.params.id)
-        res.send(204);
-        return next();
-    }
-
-    /**
-     * CORS Preflight durchlassen.
-     */
-    corsPreflight(req, res, next) {
-        res.send(200);
+        res.status(204);
+        res.send({});
         return next();
     }
 }

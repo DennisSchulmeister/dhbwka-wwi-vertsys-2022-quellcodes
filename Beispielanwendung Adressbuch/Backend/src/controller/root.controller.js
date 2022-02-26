@@ -9,10 +9,12 @@ import { readFile } from 'fs/promises';
 export default class RootController {
     /**
      * Konstruktor. Hier werden die URL-Handler registrert.
+     *
      * @param {Object} server Restify Serverinstanz
+     * @param {String} prefix Gemeinsamer Prefix aller URLs
      */
-    constructor(server) {
-        server.get("/", this.serveOpenApiSpecification);
+    constructor(server, prefix) {
+        server.get(prefix, this.serveOpenApiSpecification);
     }
 
     /**

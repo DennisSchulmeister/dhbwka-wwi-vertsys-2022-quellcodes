@@ -19,7 +19,8 @@ werden. Der Befehl öffnet eine Kommandozeile innerhalb des Containers, in
 die die obigen Befehle eingegeben werden können:
 
 ```sh
-docker run -it -p 3000:3000 -w /app -v "$(pwd):/app" node:12-alpine sh
+docker network create addressbuch
+docker run -it --net addressbuch -p 3000:3000 -w /app -v "$(pwd):/app" node:17-alpine sh
 ```
 
 Mit dem Befehl `exit` kann die Kommandozeile des Containers verlassen werden.
@@ -29,7 +30,7 @@ Zusätzlich wird eine MongoDB-Datenbank benötigt, die mit folgendem Befehl
 gestartet werden kann:
 
 ```sh
-docker run --name mongodb -d -p 27017:27017 mongo
+docker run -d --name mongodb --net addressbuch -p 27017:27017 mongo
 ```
 
 Für den Produktivbetrieb konfiguriert das beigefügte `Dockerfile` eine
@@ -37,8 +38,8 @@ nodeJS-Laufzeitumgebung, die in einer beliebigen Cloudumgebung mit Unterstützun
 für Containervirtualisierung ausgeführt werden kann. Folgende Befehle werden
 hierfür benötigt:s
 
- * `docker build -t adressbuch-backend .` zum Bauen des Containers
- * `docker run -d -p 3000:3000 --name backend adressbuch-backend` zum Ausführen des Containers
+ * `docker build -t addressbuch-backend .` zum Bauen des Containers
+ * `docker run -d -p 3000:3000 --name backend addressbuch-backend` zum Ausführen des Containers
  * `docker container stop backend` zum Stoppen des Containers
  * `docker container prune` zum Aufräumen alter Container-Dateien
  * `docker image prune` zum Aufräumen alter Image-Dateien
