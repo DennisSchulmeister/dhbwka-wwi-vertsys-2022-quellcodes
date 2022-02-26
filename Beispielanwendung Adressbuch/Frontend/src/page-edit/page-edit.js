@@ -103,10 +103,15 @@ export default class PageEdit extends Page {
         }
 
         // Datensatz speichern
-        if (this._editId) {
-            await this._app.backend.updateAddress(this._editId, this._dataset);
-        } else {
-            await this._app.backend.createAddress(this._dataset);
+        try {
+            if (this._editId) {
+                await this._app.backend.updateAddress(this._editId, this._dataset);
+            } else {
+                await this._app.backend.createAddress(this._dataset);
+            }
+        } catch (ex) {
+            this._app.showException(ex);
+            return;
         }
 
         // Zurück zur Übersicht

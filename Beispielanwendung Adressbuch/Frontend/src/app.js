@@ -68,7 +68,7 @@ class App {
             await page.init();
             this._showPage(page, "list");
         } catch (ex) {
-            this._showException(ex);
+            this.showException(ex);
         }
     }
 
@@ -85,7 +85,7 @@ class App {
             await page.init();
             this._showPage(page, "new");
         } catch (ex) {
-            this._showException(ex);
+            this.showException(ex);
         }
     }
 
@@ -104,7 +104,7 @@ class App {
             await page.init();
             this._showPage(page, "edit");
         } catch (ex) {
-            this._showException(ex);
+            this.showException(ex);
         }
     }
 
@@ -136,7 +136,7 @@ class App {
      *
      * @param {Object} ex Abgefangene Ausnahme
      */
-    _showException(ex) {
+    showException(ex) {
         console.error(ex);
         alert(ex.toString());
     }

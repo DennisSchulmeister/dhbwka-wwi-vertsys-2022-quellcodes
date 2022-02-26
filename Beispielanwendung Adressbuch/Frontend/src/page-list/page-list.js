@@ -89,7 +89,12 @@ export default class PageList extends Page {
         if (!answer) return;
 
         // Datensatz löschen
-        this._app.backend.deleteAddress(id);
+        try {
+            this._app.backend.deleteAddress(id);
+        } catch (ex) {
+            this._app.showException(ex);
+            return;
+        }
 
         // HTML-Element entfernen
         this._mainElement.querySelector(`[data-id="${id}"]`)?.remove();
