@@ -30,7 +30,8 @@ export default class AddressController {
     }
 
     /**
-     * GET /address: Adressen suchen
+     * GET /address
+     * Adressen suchen
      */
     async searchAddresses(req, res, next) {
         let result = await this._addressService.searchAddresses(req.query);
@@ -39,7 +40,8 @@ export default class AddressController {
     }
 
     /**
-     * POST /address: Neue Adresse anlegen
+     * POST /address
+     * Neue Adresse anlegen
      */
     async createAddress(req, res, next) {
         let result = await this._addressService.createAddress(req.body);
@@ -48,7 +50,8 @@ export default class AddressController {
     }
 
     /**
-     * GET /address/{id}: Adresse auslesen
+     * GET /address/:id
+     * showException: Adresse auslesen
      */
     async readAddress(req, res, next) {
         let result = await this._addressService.readAddress(req.params.id);
@@ -57,7 +60,9 @@ export default class AddressController {
     }
 
     /**
-     * PUT oder PATCH /address/{id}: Adresse ändern
+     * PUT /address/:id
+     * PATCH /address/:id
+     * showException: Adresse ändern
      */
     async updateAddress(req, res, next) {
         let result = await this._addressService.updateAddress(req.params.id, req.body);
@@ -66,7 +71,8 @@ export default class AddressController {
     }
 
     /**
-     * DELETE /address/{id}: Adresse löschen
+     * DELETE /address/:id
+     * showException: Adresse löschen
      */
     async deleteAddress(req, res, next) {
         await this._addressService.deleteAddress(req.params.id)
