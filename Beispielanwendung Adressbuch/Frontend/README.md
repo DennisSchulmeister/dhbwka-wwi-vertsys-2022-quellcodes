@@ -24,7 +24,7 @@ werden. Der Befehl öffnet eine Kommandozeile innerhalb des Containers, in
 die die obigen Befehle eingegeben werden können:
 
 ```sh
-docker run -it --net addressbuch -p 8080:8080 -w /app -v "$(pwd):/app" node:17-alpine sh
+docker run -it --net adressbuch -p 8080:8080 -w /app -v "$(pwd):/app" node:17-alpine sh
 ```
 
 Mit dem Befehl `exit` kann die Kommandozeile des Containers verlassen werden.
@@ -35,8 +35,8 @@ Für den Produktivbetrieb konfiguriert das beigefügte `Dockerfile` einen
 für Containervirtualisierung ausgeführt werden kann. Folgende Befehle werden
 hierfür benötigt:s
 
- * `docker build -t addressbuch-frontend .` zum Bauen des Containers
- * `docker run -d -p 8080:80 --name frontend addressbuch-frontend` zum Ausführen des Containers
+ * `docker build -t adressbuch-frontend .` zum Bauen des Containers
+ * `docker run -d -p 8080:80 --name frontend adressbuch-frontend` zum Ausführen des Containers
  * `docker container stop frontend` zum Stoppen des Containers
  * `docker container prune` zum Aufräumen alter Container-Dateien
  * `docker image prune` zum Aufräumen alter Image-Dateien
