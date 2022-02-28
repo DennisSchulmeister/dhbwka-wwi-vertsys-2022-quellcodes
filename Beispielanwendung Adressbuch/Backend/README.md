@@ -99,16 +99,16 @@ ausgeführt. In der `../docker-compose.dev.yml` werden hingegen die Befehle
 Node.js in Docker ausführen
 ---------------------------
 
-Siehe gleichnamigen Abschnitt im Frontend-README. Das Vorgehen ist exakt dasselbe,
-da beide Teile der Anwendung Node.JS verwenden. Denken Sie lediglich daran, für
-das Frontend und das Backend jeweils eine eigene Node.js-Umgebung in Docker zu
-starten.
+Siehe gleichnamigen Abschnitt im [Frontend-README](../Frontend). Das Vorgehen ist
+exakt dasselbe, da beide Teile der Anwendung Node.js verwenden. Denken Sie lediglich
+daran, für das Frontend und das Backend jeweils eine eigene Node.js-Umgebung in Docker
+zu starten.
 
 Produktives Container-Image bauen
 ---------------------------------
 
 Für den Produktivbetrieb konfiguriert das beigefügte `Dockerfile` eine produktive
-Node.JS-Laufzeitumgebung mit dem Quellcode des Backend-Services und allen seinen
+Node.js-Laufzeitumgebung mit dem Quellcode des Backend-Services und allen seinen
 Abhängigkeiten. Der Container kann somit direkt in eine produktive Systemlandschaft
 überführt werden. Folgende Befehle werden hierfür benötigt:
 

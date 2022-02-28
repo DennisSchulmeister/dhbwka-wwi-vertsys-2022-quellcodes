@@ -59,7 +59,7 @@ Node.js in Docker ausführen
 ---------------------------
 
 Falls Node.js auf dem eigenen Rechner nicht lokal installiert wurde, kann mit
-folgenden Befehlen ein Docker-Container mit Node.JS gestartet werden. In diesem
+folgenden Befehlen ein Docker-Container mit Node.js gestartet werden. In diesem
 können die oben gezeigten Befehle dann alternativ ausgeführt werden:
 
 ```sh
@@ -81,7 +81,7 @@ den Docker-Container mit Node.js. Seine Parameter haben folgende Bedeutung:
   | `-p 8080:8080`     | `localhost:8080` an den Port 8080 des Containers weiterleiten |
   | `-w /app`          | Arbeitsverzeichnis `/app` im Container benutzen               |
   | `-v "$(pwd):/app"` | Das aktuelle Verzeichnis unter `/app` im Container einbinden  |
-  | `node:17-alpine`   | Name des auszuführenden Container-Images (hier Node.JS 17)    |
+  | `node:17-alpine`   | Name des auszuführenden Container-Images (hier Node.js 17)    |
   | `sh`               | Start einer interaktiven Shell im Container                   |
 
 Innerhalb des Containers wird eine interaktive Shell zur Ausführung der oben
