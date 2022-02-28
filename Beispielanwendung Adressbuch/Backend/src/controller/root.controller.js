@@ -1,6 +1,13 @@
 "use strict"
 
-import { readFile } from 'fs/promises';
+import {wrapHandler} from "../utils.js";
+import path from "path";
+import { readFile } from "fs/promises";
+
+// Verzeichnisnamen der Quellcodedatei ermitteln
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /**
  * Controller für die Wurzeladresse des Webservices. Ermöglicht in dieser
@@ -14,7 +21,9 @@ export default class RootController {
      * @param {String} prefix Gemeinsamer Prefix aller URLs
      */
     constructor(server, prefix) {
-        server.get(prefix, this.serveOpenApiSpecification);
+        this._openapiFile = path.normalize(path.join(__dirname, "..", "api", "openapi.yaml"));
+
+        server.get(prefix, wrapHandler(this, this.serveOpenApiSpecification));
     }
 
     /**
@@ -22,7 +31,7 @@ export default class RootController {
      */
     async serveOpenApiSpecification(req, res, next) {
         if (req.query.openapi !== undefined) {
-            let filecontent = await readFile("../src/api/openapi.yaml");
+            let filecontent = await readFile(this._openapiFile);
 
             res.status(200);
             res.header("content-type", "application/openapi+yaml");

@@ -7,7 +7,7 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon src/index.js"
+    "start": "nodemon --inspect=0.0.0.0:9229 src/index.js"
   },
   "dependencies": {
     "mongodb": "^4.4.0",

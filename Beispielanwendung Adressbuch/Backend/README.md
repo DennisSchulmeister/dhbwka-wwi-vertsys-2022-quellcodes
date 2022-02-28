@@ -1,52 +1,122 @@
 Adressbuch: Backend
 ===================
 
-Dies ist der backendseitige REST-Webservice der Adressbuch-App. Es handelt
-sich um ein einfaches nodeJS-Projekt mit dem Webframework "Restify". Die
-Schnittstelle des Webservices ist in der Datei `src/api/openapi.yaml`
+Inhaltsverzeichnis
+------------------
+
+1. [Kurzbeschreibung](#kurzbeschreibung)
+1. [Start mit Docker Compose](#start-mit-docker-compose)
+1. [Manueller Start der MongoDB](#manueller-start-der-mongodb)
+1. [Node.js-Kommandozeilenbefehle](#node.js-kommandozeilenbefehle)
+1. [Node.js in Docker ausführen](#node.js-in-docker-ausführen)
+1. [Produktives Container Image bauen](#produktives-container-image-bauen)
+
+Kurzbeschreibung
+----------------
+
+Dies ist der backendseitige REST-Webservice der Adressbuch-App. Es handelt sich
+um ein einfaches nodeJS-Projekt mit dem Webframework [Restify](http://restify.com/).
+Die Schnittstelle des Webservices ist in der Datei `src/api/openapi.yaml`
 beschrieben.
 
-Zur Ausführung des Backendservices wird eine nodeJS-Laufzeitumgebung benötigt.
-Ist diese vorhanden, stehen folgende Befehle zur Verfügung:
+Start mit Docker Compose
+------------------------
+
+Am einfachsten lässt sich die App mit Docker Compose aus dem Wurzelverzeichnis
+heraus starten. Das dort abgelegte README beschriebt die dafür notwendigen
+Befehle im Detail:
+
+ * `docker-compose -f docker-compose.dev.yml up -d` zum Starten aller Dienste
+ * `docker-compose -f docker-compose.dev.yml down` zum Stoppen aller Dienste
+ * `docker system prune` zum Aufräumen nicht mehr benötigter Dateien
+
+Die nachfolgenden Abschnitte in dieser Datei beschreiben hingegen, was dabei im
+Hintergrund passiert bzw. wie das Backend mit und ohne Docker isoliert gestartet
+werden kann.
+
+Manueller Start der MongoDB
+---------------------------
+
+Wird der Service nicht mit Docker Compose gestartet, muss erst eine lokale MongoDB
+gestartet werden, bevor der Service ausgeführt werden kann. Diese muss auf der
+Adresse mongodb://localhost:27017 erreichbar sein, sofern diese nicht durch die
+Umgebungsvariable `MONGODB` übersteuert wird.
+
+Am einfachsten kann dies durch Starten eines temporären Docker Container
+erreicht werden:
+
+```sh
+docker network create adressbuch
+docker run -d --name mongodb --net adressbuch -p 27017:27017 mongo
+```
+
+Der erste Befehl muss dabei nur ausgeführt werden, wenn das virtuelle Netzwerk
+`adressbuch` nicht bereits zuvor angelegt wurde. Der zweite Befehl startet
+eine temporäre MongoDB-Instanz und verbindet sie mit dem virtuellen Netzwerk.
+Zusätzlich wird der Port 27017 das eigenen Rechners an den Port 27017 des
+Containers weitergeleitet, um die Datenbank auch dann nutzen können, wenn der
+Backend-Service nicht mit Docker gestartet wird.
+
+Mit folgendem Befehl kann darüber hinaus ein grafisches Admin-Tool zur
+Verwaltung der Datenbank gestartet werden:
+
+```sh
+docker run -d --name mongo-gui --net adressbuch -p 8081:8081 -e ME_CONFIG_MONGODB_URL=mongodb://mongodb:27017/ mongo-express
+```
+
+Mit folgenden Befehlen können die beiden Container wieder gestoppt und nicht
+mehr benötigte Ressourcen freigegeben werden:
+
+```sh
+docker container stop mongo
+docker container stop mongo-gui
+docker system prune
+```
+
+Unnötig zu erwähnen, dass diese Schritte durch Docker Compose vollständig
+automatisiert werden.
+
+Node.js-Kommandozeilenbefehle
+-----------------------------
+
+Dieser Service nutzt Node.js bzw. den Node Package Manager zur Verwaltung von
+Abhängigkeiten (im Quellcode verwendete, externe Bibliothekten und Frameworks)
+und seiner Ausführung. Hierfür stehen folgende Kommandozeilenbefehle zur
+Verfügung:
 
  * `npm install` zur Installation aller benötigten Module
  * `npm update` zur Aktualisierung aller Abhängigkeiten
  * `npm start` zum Starten eines Entwicklungsservers auf Port 3000
 
-Falls keine lokale nodeJS-Umgebung zur Verfügung steht, kann mit folgendem
-Befehlen ein Docker-Container zur Ausführung der obigen Kommandos gestartet
-werden. Der Befehl öffnet eine Kommandozeile innerhalb des Containers, in
-die die obigen Befehle eingegeben werden können:
+Dank `nodemon` werden Änderungen am Quellcode werden sofort aktiv, indem der
+Service automatisch neugestartet wird. Zusätzlich kann der Standardport 9229
+zur Anbindung eines JavaScript-Debuggers verwendet werden.
 
-```sh
-docker network create adressbuch
-docker run -it --net adressbuch -p 3000:3000 -w /app -v "$(pwd):/app" node:17-alpine sh
-```
+`npm install` wird auch im `Dockerfile` während dem Bauen des Container Images
+ausgeführt. In der `../docker-compose.dev.yml` werden hingegen die Befehle
+`npm install` und `npm start` ausgeführt.
 
-Mit dem Befehl `exit` kann die Kommandozeile des Containers verlassen werden.
-Der Container wird dadurch automatisch gestoppt.
+Node.js in Docker ausführen
+---------------------------
 
-Zusätzlich wird eine MongoDB-Datenbank benötigt, die mit folgendem Befehl
-gestartet werden kann:
+Siehe gleichnamigen Abschnitt im Frontend-README. Das Vorgehen ist exakt dasselbe,
+da beide Teile der Anwendung Node.JS verwenden. Denken Sie lediglich daran, für
+das Frontend und das Backend jeweils eine eigene Node.js-Umgebung in Docker zu
+starten.
 
-```sh
-docker run -d --name mongodb --net adressbuch -p 27017:27017 mongo
-```
+Produktives Container-Image bauen
+---------------------------------
 
-Für den Produktivbetrieb konfiguriert das beigefügte `Dockerfile` eine
-nodeJS-Laufzeitumgebung, die in einer beliebigen Cloudumgebung mit Unterstützung
-für Containervirtualisierung ausgeführt werden kann. Folgende Befehle werden
-hierfür benötigt:s
+Für den Produktivbetrieb konfiguriert das beigefügte `Dockerfile` eine produktive
+Node.JS-Laufzeitumgebung mit dem Quellcode des Backend-Services und allen seinen
+Abhängigkeiten. Der Container kann somit direkt in eine produktive Systemlandschaft
+überführt werden. Folgende Befehle werden hierfür benötigt:
 
  * `docker build -t adressbuch-backend .` zum Bauen des Containers
- * `docker run -d -p 3000:3000 --name backend adressbuch-backend` zum Ausführen des Containers
- * `docker container stop backend` zum Stoppen des Containers
- * `docker container prune` zum Aufräumen alter Container-Dateien
- * `docker image prune` zum Aufräumen alter Image-Dateien
+ * `docker run -d -p 3000:3000 --net adressbuch --name backend-prod adressbuch-backend` zum Ausführen des Containers
+ * `docker container stop backend-prod` zum Stoppen des Containers
+ * `docker system prune` zum Aufräumen nicht mehr benötigter Daten
 
-Alternativ kann die im Wurzelverzeichnis abgelegte Datei `docker-compose.yml`
-genutzt werden, um alle Teile der Anwendung mit Docker im Entwicklungs- oder
-Produktivmodus zu starten.
-
-Siehe [Docker Getting Started Guide](https://docs.docker.com/get-started/)
-führ ein ausführliches Tutorial zur Nutzung von Docker während der Entwicklung.
+Das `Dockerfile` wird auch verwendet, wenn im Wurzelverzeichnis mit Docker
+Compose die Datei `docker-compose.prod.yml` ausgeführt wird. Der Container wird
+im Grunde genommen damit auch auf die gleiche Art gestartet.

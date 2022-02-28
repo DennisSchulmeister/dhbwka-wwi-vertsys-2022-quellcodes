@@ -1,16 +1,29 @@
 "use strict";
 
 /**
- * Hilfsfunktion für asynchrone HTTP-Handler.
+ * Hilfsfunktion zur Vereinfachung der HTTP-Handler-Methoden in Anlehnung an
  * Vgl. https://stackoverflow.com/a/48109157
  *
- * @param {Function} fn Asynchrone Handler-Funktion
- * @return {[type]} Synchrone Handler-Funktion mit Callback-Mechanismus
+ * Stellt sicher, dass der Parameter `this` in den Methoden tatsächlich auf
+ * das Controller-Objekt zeigt, sowie dass Ausnahmen sauber an das Restify.
+ * Framework weitergereicht werden, egal ob es sich bei der Handler-Methode
+ * um eine synchrone oder asynchrone Methode handelt. Im Endeffekt müssen
+ * somit Ausnahmen in den Handler-Methoden nicht mehr abgefangen werden,
+ * sondern werden immer anständig als Fehler an den Client gemeldet.
+ *
+ * @param {Function} func Asynchrone Handler-Funktion
+ * @return {Function} Synchrone Handler-Funktion mit Callback-Mechanismus
  */
-export function wrapAsyncHandler(fn) {
+export function wrapHandler(that, func) {
+    func = func.bind(that);
+
     return (req, res, next) => {
-        return fn(req, res, next).catch((err) => {
-            return next(err);
-        });
+        try {
+            return func(req, res, next)?.catch((ex) => {
+                return next(ex);
+            });
+        } catch (ex) {
+            return next(ex);
+        }
     };
 };

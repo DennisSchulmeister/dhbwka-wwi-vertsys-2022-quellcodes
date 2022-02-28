@@ -1,7 +1,7 @@
 "use strict"
 
 import AddressService from "../service/address.service.js";
-import {wrapAsyncHandler} from "../utils.js";
+import {wrapHandler} from "../utils.js";
 
 /**
  * HTTP-Controller-Klasse für Adressbucheinträge. Diese Klasse registriert
@@ -19,14 +19,14 @@ export default class AddressController {
         this._addressService = new AddressService();
 
         // Collection: Adressen
-        server.get(prefix, wrapAsyncHandler(this.searchAddresses.bind(this)));
-        server.post(prefix, wrapAsyncHandler(this.createAddress.bind(this)));
+        server.get(prefix, wrapHandler(this, this.searchAddresses));
+        server.post(prefix, wrapHandler(this, this.createAddress));
 
         // Entity: Adresse
-        server.get(prefix + "/:id", wrapAsyncHandler(this.readAddress.bind(this)));
-        server.put(prefix + "/:id", wrapAsyncHandler(this.updateAddress.bind(this)));
-        server.patch(prefix + "/:id", wrapAsyncHandler(this.updateAddress.bind(this)));
-        server.del(prefix + "/:id", wrapAsyncHandler(this.deleteAddress.bind(this)));
+        server.get(prefix + "/:id", wrapHandler(this, this.readAddress));
+        server.put(prefix + "/:id", wrapHandler(this, this.updateAddress));
+        server.patch(prefix + "/:id", wrapHandler(this, this.updateAddress));
+        server.del(prefix + "/:id", wrapHandler(this, this.deleteAddress));
     }
 
     /**
