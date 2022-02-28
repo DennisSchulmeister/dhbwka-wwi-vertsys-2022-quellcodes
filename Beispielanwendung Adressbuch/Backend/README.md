@@ -7,8 +7,8 @@ Inhaltsverzeichnis
 1. [Kurzbeschreibung](#kurzbeschreibung)
 1. [Start mit Docker Compose](#start-mit-docker-compose)
 1. [Manueller Start der MongoDB](#manueller-start-der-mongodb)
-1. [Node.js-Kommandozeilenbefehle](#node.js-kommandozeilenbefehle)
-1. [Node.js in Docker ausführen](#node.js-in-docker-ausführen)
+1. [Node.js-Kommandozeilenbefehle](#nodejs-kommandozeilenbefehle)
+1. [Node.js in Docker ausführen](#nodejs-in-docker-ausführen)
 1. [Produktives Container Image bauen](#produktives-container-image-bauen)
 
 Kurzbeschreibung
