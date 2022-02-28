@@ -11,7 +11,23 @@ export default class Backend {
      * Konstruktor.
      */
     constructor() {
-        this._url = "http://localhost:3000";
+        this._url = "";
+    }
+
+    /**
+     * Abruf der Backend-URL aus der Datei `api.url`. Diese kann über die
+     * Umgebungsvariable API_URL beim Start des Docker-Containers überschrieben
+     * werden.
+     */
+    async init() {
+        // Backend-URL abrufen
+        let response = await fetch("api.url");
+        this._url = await response.text();
+
+        // Angehnängte Slashes entfernen
+        while (this._url.endsWith("/")) {
+            this._url = this._url.slice(0, this._url.length - 1);
+        }
     }
 
     /**

@@ -50,7 +50,13 @@ services:
         build:
             context: ./Frontend
         ports:
-            - 8080:8080
+            - 8080:80
+        environment:
+            # Die URL des Backends kann durch die Umgebungsvariable API_URL
+            # beim Aufruf von Docker Compose übersteuert werden. Sie wird an
+            # die gleichnamige Umgebungsvariable im Container durchgereicht
+            # bzw. mit dem Standardwert http://localhost:3000 belegt.
+            API_URL: ${API_URL:-http://localhost:3000}
 
 volumes:
     dbdata:

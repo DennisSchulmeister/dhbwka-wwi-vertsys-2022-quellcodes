@@ -67,6 +67,36 @@ Lediglich der Dateiname muss in den folgenden Befehlen angepasst werden:
  * `docker-compose -f docker-compose.dev.yml down` zum Stoppen aller Dienste
  * `docker system prune` zum Aufräumen nicht mehr benötigter Dateien
 
+Im Falle der Produktivversion werden die Container für Frontend und Backend von
+Docker Compose nur einmalig gebaut, dann aber nicht mehr erneut gebaut, wenn
+sich der zugrunde liegende Quellcode verändert. Vor der nächsten Ausführung
+müssen sie daher bei einer Änderung mit folgendem Befehl erneut gebaut werden:
+
+```sh
+docker-compose -f docker-compose.prod.yml build
+```
+
+In der Produktivversion kann durch Setzen der Umgebungsvariable API_URL die
+Adresse des Backendservices definiert werden, mit der sich das Frontend zu
+verbinden versucht:
+
+```sh
+export API_URL=http://api.beispiel.de
+docker-compose -f docker-compose.prod.yml up -d
+```
+
+Dies Funktioniert, indem die Umgebungsvariable in der `docker-compose.prod.yml`
+an die gleichnamige Umgebungsvariable des Frontend-Containers übergeben und
+bei dessen Start durch ein Startskript ausgewertet wird. Das Skript schreibt
+den Inhalt in eine statische Datei, die das Frontend unter der Addresse
+`api.url` abrufen kann. Der Mechanismus ist im Grunde genommen derselbe, wie
+Docker ihn für "Secrets" und "Configs" bereitstellt. Auch diese werden einfach
+über eine Datei im Container sichtar gemacht. Leider bietet Docker diese
+Funktion aber nur in Zusammenhang mit Docker Swarm an. Zwar lässt sich die
+App unverändert auch mit Docker Swarm ausführen, dies wird hier allerdings
+absichtlicht nicht beschrieben, da es auf Docker Compose aufbaut und Docker
+Compose davon abgesehen für uns zunächst ausreicht.
+
 Start einzelner Services mit und ohne Docker
 --------------------------------------------
 

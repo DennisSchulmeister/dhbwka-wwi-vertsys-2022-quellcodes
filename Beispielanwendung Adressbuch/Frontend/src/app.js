@@ -53,7 +53,12 @@ class App {
      * mit den zugrunde liegenden Promise-Objekten direkt hantieren zu müssen.
      */
     async init() {
-        this.router.start();
+        try {
+            await this.backend.init();
+            this.router.start();
+        } catch (ex) {
+            this.showException(ex);
+        }
     }
 
     /**
