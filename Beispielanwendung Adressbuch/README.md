@@ -67,10 +67,10 @@ sieht somit in etwa so aus:
 
 ```mermaid
 graph LR
-    (Externe Aufrufer) --> {Gateway};
-    [Gateway] --> [Frontend];
-    [Gateway] --> [Backend];
-    [Backend] --> [MongoDB];
+    E(Externe Aufrufer) --> G[Gateway];
+    G[Gateway] --> F[Frontend];
+    G[Gateway] --> B[Backend];
+    B[Backend] --> M[MongoDB];
 ```
 
 Das Vorgehen zum Starten und Stoppen der Anwendung ist für beide Modus gleich.
