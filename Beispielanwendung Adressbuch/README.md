@@ -65,10 +65,11 @@ Ebenso sind die meisten Services in dieser Version von Außen nicht mehr
 erreichbar, sondern hinter einem Gateway-Server versteckt. Die Architektur
 sieht somit in etwa so aus:
 
-```puml
-Gateway -> Frontend
-Gateway -> Backend
-Backend -> MongoDB
+```mermaid
+graph LR
+    A[Gateway] --> B[Frontend];
+    A[Gateway] --> C[Backend];
+    C[Backend] --> D[MongoDB];
 ```
 
 Das Vorgehen zum Starten und Stoppen der Anwendung ist für beide Modus gleich.
