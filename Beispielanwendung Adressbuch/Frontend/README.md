@@ -108,13 +108,13 @@ Produktives Container-Image bauen
 ---------------------------------
 
 Für den Produktivbetrieb konfiguriert das beigefügte `Dockerfile` einen
-`nginx`-Webserver, der in einer beliebigen Cloudumgebung mit Unterstützung
+`nginx` Webserver, der in einer beliebigen Cloudumgebung mit Unterstützung
 für Containervirtualisierung ausgeführt werden kann. Folgende Befehle werden
 hierfür benötigt:
 
  * `docker build -t adressbuch-frontend .` zum Bauen des Containers
- * `docker run -d -p 8080:80 --net adressbuch --name frontend-prod adressbuch-frontend` zum Ausführen des Containers
- * `docker container stop frontend-prod` zum Stoppen des Containers
+ * `docker run -d -p 8080:80 --net adressbuch --name frontend adressbuch-frontend` zum Ausführen des Containers
+ * `docker container stop frontend` zum Stoppen des Containers
  * `docker system prune` zum Aufräumen nicht mehr benötigter Daten
 
 Das `Dockerfile` wird auch verwendet, wenn im Wurzelverzeichnis mit Docker

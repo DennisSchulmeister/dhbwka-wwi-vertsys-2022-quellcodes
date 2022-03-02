@@ -113,8 +113,8 @@ Abhängigkeiten. Der Container kann somit direkt in eine produktive Systemlandsc
 überführt werden. Folgende Befehle werden hierfür benötigt:
 
  * `docker build -t adressbuch-backend .` zum Bauen des Containers
- * `docker run -d -p 3000:3000 --net adressbuch --name backend-prod adressbuch-backend` zum Ausführen des Containers
- * `docker container stop backend-prod` zum Stoppen des Containers
+ * `docker run -d -p 3000:3000 --net adressbuch --name backend adressbuch-backend` zum Ausführen des Containers
+ * `docker container stop backend` zum Stoppen des Containers
  * `docker system prune` zum Aufräumen nicht mehr benötigter Daten
 
 Das `Dockerfile` wird auch verwendet, wenn im Wurzelverzeichnis mit Docker

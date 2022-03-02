@@ -27,7 +27,7 @@
 # "podman-compose" unterstützt, so dass wir hier weiterhin getrennte Dateien
 # verwenden.
 #===============================================================================
-version: 3.9
+version: "3.9"
 
 services:
     # MongoDB-Datenbank
@@ -53,7 +53,9 @@ services:
             ME_CONFIG_MONGODB_URL: mongodb://dbuser:dbpass@mongodb:27017/
 
     # Adressbuch-Backend (Entwicklungsmodus)
-    backend-dev:
+    backend:
+        depends_on:
+            - mongodb
         image: node:17-alpine
         environment:
             HOST: "::"
@@ -68,7 +70,7 @@ services:
         command: sh -c "npm i; npm start"
 
     # Adressbuch-Frontend (Entwicklungsmodus)
-    frontend-dev:
+    frontend:
         image: node:17-alpine
         ports:
             - 8080:8080

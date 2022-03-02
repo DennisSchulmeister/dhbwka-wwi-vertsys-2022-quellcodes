@@ -16,14 +16,6 @@ RUN npm run build
 # Schritt 2: Den eigentlichen Container bauen
 #-------------------------------------------------------------------------------
 FROM nginx:alpine
-
-# Backend-URL via Umgebungsvariable API_URL setzbar machen.
-# Leider erfordert dies nicht nur ein eigenes kleines Wrapper-Skript, sondern
-# auch, dass das ursprüngliche Skript vom Basiscontainer manuell aufgerufen
-# und die CMD-Anweisung hier wiederholt werden muss.
-COPY docker-entrypoint-wrapper.sh /
-RUN chmod +x /docker-entrypoint-wrapper.sh
-ENTRYPOINT ["/docker-entrypoint-wrapper.sh"]
-CMD ["nginx", "-g", "daemon off;"]
-
+COPY save-api-url.sh /docker-entrypoint.d/
+RUN chmod +x /docker-entrypoint.d/save-api-url.sh
 COPY --from=build /app/build /usr/share/nginx/html

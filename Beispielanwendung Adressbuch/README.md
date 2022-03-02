@@ -49,18 +49,29 @@ Anwendung im Entwicklungs- oder Produktivmodus gestartet werden kann:
  * `docker-compose.prod.yml`: Produktivmodus mit folgenden Diensten:
 
      1. MongoDB (von Außen nicht erreichbar)
-     2. Backend (erreichbar auf http://localhost:3000)
-     3. Frontend (erreichbar auf http://localhost:8080)
+     2. Backend (von Außen nicht erreichbar)
+     3. Frontend (von Außen nicht erreichbar)
+     4. Gateway (erreichbar auf http://localhost:8080)
 
- Im Unterschied zum Entwicklungsmodus werden hier anhand der in den jeweiligen
- Verzeichnissen abgelegten Datei `Dockerfile` eigenständige Container Images
- für Frontend und Backend gebaut und ausgeführt. Der Quellcode wird hierfür
- einmalig in die Images hinein kopiert, so dass Änderungen daran erst wirksam
- werden, wenn die Images neu erstellt werden. Dies kann entweder in den
- jeweiligen Verzeichnissen manuell oder durch Neustarten von Docker Compose
- erreicht werden.
+Im Unterschied zum Entwicklungsmodus werden hier anhand der in den jeweiligen
+Verzeichnissen abgelegten Datei `Dockerfile` eigenständige Container Images
+für Frontend und Backend gebaut und ausgeführt. Der Quellcode wird hierfür
+einmalig in die Images hinein kopiert, so dass Änderungen daran erst wirksam
+werden, wenn die Images neu erstellt werden. Dies kann entweder in den
+jeweiligen Verzeichnissen manuell oder durch Neustarten von Docker Compose
+erreicht werden.
 
-Das Vorgehen zum Starten und Stoppen der Anwendung ist in beiden Fällen gleich.
+Ebenso sind die meisten Services in dieser Version von Außen nicht mehr
+erreichbar, sondern hinter einem Gateway-Server versteckt. Die Architektur
+sieht somit in etwa so aus:
+
+```puml
+Gateway -> Frontend
+Gateway -> Backend
+Backend -> MongoDB
+```
+
+Das Vorgehen zum Starten und Stoppen der Anwendung ist für beide Modus gleich.
 Lediglich der Dateiname muss in den folgenden Befehlen angepasst werden:
 
  * `docker-compose -f docker-compose.dev.yml up -d` zum Starten aller Dienste

@@ -20,7 +20,7 @@
 # "podman-compose" unterstützt, so dass wir hier weiterhin getrennte Dateien
 # verwenden.
 #===============================================================================
-version: 3.9
+version: "3.9"
 
 services:
     # MongoDB-Datenbank
@@ -35,28 +35,45 @@ services:
             - dbconfig:/data/configdb
 
     # Adressbuch-Backend (Produktivmodus)
-    backend-prod:
+    backend:
+        depends_on:
+            - mongodb
         build:
             context: ./Backend
         environment:
             HOST: "::"
             PORT: 3000
             MONGODB: mongodb://dbuser:dbpass@mongodb:27017/
-        ports:
-            - 3000:3000
+        deploy:
+            # Beispiel für die Skalierung mit drei parallelen Instanzen.
+            # Die Anzahl kann beim Aufruf von `docker-compose` durch den
+            # Parameter `--scale backend=…` übersteuert werden.
+            replicas: 3
 
     # Adressbuch-Frontend (Produktivmodus)
-    frontend-prod:
+    frontend:
         build:
             context: ./Frontend
-        ports:
-            - 8080:80
         environment:
             # Die URL des Backends kann durch die Umgebungsvariable API_URL
             # beim Aufruf von Docker Compose übersteuert werden. Sie wird an
             # die gleichnamige Umgebungsvariable im Container durchgereicht
-            # bzw. mit dem Standardwert http://localhost:3000 belegt.
-            API_URL: ${API_URL:-http://localhost:3000}
+            # und von dort für die Single Page App via HTTP abrufbar gemacht.
+            # In einem echten Produktivsetup müsste hier statt localhost
+            # natürlich ein richtiger Hostname eingetragen werden.
+            API_URL: ${API_URL:-http://localhost:8080/api}
+        deploy:
+            replicas: 2
+
+    # Gateway-Server
+    gateway:
+        depends_on:
+            - backend
+            - frontend
+        build:
+            context: ./Gateway
+        ports:
+            - 8080:81
 
 volumes:
     dbdata:
