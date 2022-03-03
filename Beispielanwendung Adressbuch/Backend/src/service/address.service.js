@@ -1,7 +1,6 @@
 "use strict"
 
 import DatabaseFactory from "../database.js";
-import RestifyError from "restify-errors";
 import {ObjectId} from "mongodb";
 
 /**
@@ -42,14 +41,11 @@ export default class AddressService {
      *
      * @param {Object} address Zu speichernde Adressdaten
      * @return {Promise} Gespeicherte Adressdaten
-     * @throws {RestifyError} Fehlerhafte Eingaben
      */
     async createAddress(address) {
-        // Pflichtfelder prüfen
-        if (!address.first_name) throw new RestifyError.BadRequestError("Vorname fehlt");
-        else if (!address.last_name) throw new RestifyError.BadRequestError("Nachname fehlt");
-
         // Neue Adresse anlegen
+        address = address || {};
+
         let newAddress = {
             first_name: address.first_name || "",
             last_name:  address.last_name || "",
@@ -69,7 +65,6 @@ export default class AddressService {
      */
     async readAddress(id) {
         let result = await this._addresses.findOne({_id: new ObjectId(id)});
-        if (!result) throw new RestifyError.NotFoundError("Adresse nicht gefunden");
         return result;
     }
 
@@ -79,12 +74,11 @@ export default class AddressService {
      *
      * @param {String} id ID der gesuchten Adresse
      * @param {[type]} address Zu speichernde Adressdaten
-     * @return {Promise} Gespeicherte Adressdaten
-     * @throws {RestifyError} Fehlerhafte Eingaben
+     * @return {Promise} Gespeicherte Adressdaten oder undefined
      */
     async updateAddress(id, address) {
         let oldAddress = await this._addresses.findOne({_id: new ObjectId(id)});
-        if (!oldAddress) throw new RestifyError.NotFoundError("Adresse nicht gefunden");
+        if (!oldAddress) return;
 
         let updateDoc = {
             $set: {},

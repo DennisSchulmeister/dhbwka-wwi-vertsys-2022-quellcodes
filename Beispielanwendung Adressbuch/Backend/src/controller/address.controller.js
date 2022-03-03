@@ -2,6 +2,7 @@
 
 import AddressService from "../service/address.service.js";
 import {wrapHandler} from "../utils.js";
+import RestifyError from "restify-errors";
 
 /**
  * HTTP-Controller-Klasse für Adressbucheinträge. Diese Klasse registriert
@@ -17,6 +18,7 @@ export default class AddressController {
      */
     constructor(server, prefix) {
         this._addressService = new AddressService();
+        this._prefix = prefix;
 
         // Collection: Adressen
         server.get(prefix, wrapHandler(this, this.searchAddresses));
@@ -35,7 +37,7 @@ export default class AddressController {
      */
     async searchAddresses(req, res, next) {
         let result = await this._addressService.searchAddresses(req.query);
-        res.send(result);
+        res.sendResult(result);
         return next();
     }
 
@@ -45,7 +47,11 @@ export default class AddressController {
      */
     async createAddress(req, res, next) {
         let result = await this._addressService.createAddress(req.body);
-        res.send(result);
+
+        res.status(201);
+        res.header("Location", `${this._prefix}/${result._id}`);
+        res.sendResult(result);
+
         return next();
     }
 
@@ -55,7 +61,13 @@ export default class AddressController {
      */
     async readAddress(req, res, next) {
         let result = await this._addressService.readAddress(req.params.id);
-        res.send(result);
+
+        if (result) {
+            res.sendResult(result);
+        } else {
+            throw new RestifyError.NotFoundError("Adresse nicht gefunden");
+        }
+
         return next();
     }
 
@@ -66,7 +78,13 @@ export default class AddressController {
      */
     async updateAddress(req, res, next) {
         let result = await this._addressService.updateAddress(req.params.id, req.body);
-        res.send(result);
+
+        if (result) {
+            res.sendResult(result);
+        } else {
+            throw new RestifyError.NotFoundError("Adresse nicht gefunden");
+        }
+
         return next();
     }
 
@@ -77,7 +95,7 @@ export default class AddressController {
     async deleteAddress(req, res, next) {
         await this._addressService.deleteAddress(req.params.id)
         res.status(204);
-        res.send({});
+        res.sendResult({});
         return next();
     }
 }

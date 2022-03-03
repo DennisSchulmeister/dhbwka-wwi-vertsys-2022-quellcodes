@@ -5,8 +5,8 @@ import path from "path";
 import { readFile } from "fs/promises";
 
 // Verzeichnisnamen der Quellcodedatei ermitteln
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /**
@@ -21,7 +21,7 @@ export default class RootController {
      * @param {String} prefix Gemeinsamer Prefix aller URLs
      */
     constructor(server, prefix) {
-        this._openapiFile = path.normalize(path.join(__dirname, "..", "api", "openapi.yaml"));
+        this._openApiFile = path.normalize(path.join(__dirname, "..", "api", "openapi.yaml"));
 
         server.get(prefix, wrapHandler(this, this.serveOpenApiSpecification));
     }
@@ -31,7 +31,7 @@ export default class RootController {
      */
     async serveOpenApiSpecification(req, res, next) {
         if (req.query.openapi !== undefined) {
-            let filecontent = await readFile(this._openapiFile);
+            let filecontent = await readFile(this._openApiFile);
 
             res.status(200);
             res.header("content-type", "application/openapi+yaml");
