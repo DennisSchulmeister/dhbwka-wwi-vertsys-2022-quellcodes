@@ -7,7 +7,6 @@ import OpenApiEnforcerMiddleware from "@dschulmeis/restify-openapi-enforcer-midd
 //// TODO: Klasse ExampleController durch eigene Controller-Klassen ersetzen ////
 import DatabaseFactory from "./database.js";
 import RootController from "./controller/root.controller.js";
-import ExampleController from "./controller/example.controller.js";
 
 // Verzeichnisnamen der Quellcodedatei ermitteln
 import path from "path";
@@ -89,9 +88,8 @@ const openApiEnforcer = await OpenApiEnforcer(openApiFile, {
 server.use(OpenApiEnforcerMiddleware(openApiEnforcer));
 
 // HTTP-Controller registrieren
-//// TODO: Klasse ExampleController durch eigene Controller-Klassen ersetzen ////
+//// TODO: Weitere Controller-Klassen hinufügen ////
 new RootController(server, "/");
-new ExampleController(server, "/address");
 
 // Server tatsächlich starten
 server.listen(config.port, config.host, function() {

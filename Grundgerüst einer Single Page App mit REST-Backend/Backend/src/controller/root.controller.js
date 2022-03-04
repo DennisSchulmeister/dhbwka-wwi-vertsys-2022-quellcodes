@@ -35,11 +35,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
      async index(req, res, next) {
          //// TODO: Example-Collection hier durch eigene Collections ersetzen ////
          res.sendResult([
-             {
-                 _name: "example",
-                 query: {url: "/example", method: "GET"},
-                 create: {url: "/example", method: "POST"},
-             }
+             // {
+             //     _name: "example",
+             //     query: {url: "/example", method: "GET"},
+             //     create: {url: "/example", method: "POST"},
+             // }
          ]);
 
          next();

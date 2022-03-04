@@ -143,7 +143,12 @@ class App {
      */
     showException(ex) {
         console.error(ex);
-        alert(ex.toString());
+
+        if (ex.message) {
+            alert(ex.message)
+        } else {
+            alert(ex.toString());
+        }
     }
 }
 
