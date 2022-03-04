@@ -55,9 +55,11 @@ export default class PageEdit extends Page {
 
         // Bearbeiteten Datensatz laden
         if (this._editId) {
-            this._dataset = await this._app.backend.readAddress(this._editId);
+            this._url = `/address/${this._editId}`;
+            this._dataset = await this._app.backend.fetch("GET", this._url);
             this._title = `${this._dataset.first_name} ${this._dataset.last_name}`;
         } else {
+            this._url = `/address`;
             this._title = "Adresse hinzufügen";
         }
 
@@ -105,9 +107,9 @@ export default class PageEdit extends Page {
         // Datensatz speichern
         try {
             if (this._editId) {
-                await this._app.backend.updateAddress(this._editId, this._dataset);
+                await this._app.backend.fetch("PUT", this._url, {body: this._dataset});
             } else {
-                await this._app.backend.createAddress(this._dataset);
+                await this._app.backend.fetch("POST", this._url, {body: this._dataset});
             }
         } catch (ex) {
             this._app.showException(ex);

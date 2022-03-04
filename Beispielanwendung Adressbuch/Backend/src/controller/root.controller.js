@@ -23,13 +23,32 @@ export default class RootController {
     constructor(server, prefix) {
         this._openApiFile = path.normalize(path.join(__dirname, "..", "api", "openapi.yaml"));
 
-        server.get(prefix, wrapHandler(this, this.serveOpenApiSpecification));
+        server.get(prefix, wrapHandler(this, this.index));
+        server.get(prefix + "/openapi.yaml", wrapHandler(this, this.openApi));
     }
 
     /**
-     * GET /?openapi: Abruf der OpenAPI-Spezifikation
+     * GET /:
+     * Übersicht über die vorhandenen Collections liefern (HATEOAS-Prinzip,
+     * so dass Clients die URL-Struktur des Webservices entdecken können).
      */
-    async serveOpenApiSpecification(req, res, next) {
+    async index(req, res, next) {
+        res.sendResult([
+            {
+                _name: "address",
+                query: {url: "/address", method: "GET"},
+                create: {url: "/address", method: "POST"},
+            }
+        ]);
+
+        next();
+    }
+
+    /**
+     * GET /openapi.yaml:
+     * Abruf der OpenAPI-Spezifikation
+     */
+    async openApi(req, res, next) {
         if (req.query.openapi !== undefined) {
             let filecontent = await readFile(this._openApiFile);
 

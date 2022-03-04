@@ -32,11 +32,31 @@ export default class AddressController {
     }
 
     /**
+     * Hilfsmethode zum Einfügen von HATEOAS-Links in einen Datensatz.
+     * Dem Datensatz wird ein Attribut `_links` gemäß der OpenAPI-Spezifikation
+     * hinzugefügt, damit ein Client erkennen kann, wie er die Entität lesen,
+     * ändern oder löschen kann.
+     *
+     * @param {Object} entity Zu verändernder Datensatz.
+     */
+    _insertHateoasLinks(entity) {
+        let url = `${this._prefix}/${entity._id}`;
+
+        entity._links = {
+            read:   {url: url, method: "GET"},
+            update: {url: url, method: "PUT"},
+            patch:  {url: url, method: "PATCH"},
+            delete: {url: url, method: "DELETE"},
+        }
+    }
+
+    /**
      * GET /address
      * Adressen suchen
      */
     async search(req, res, next) {
         let result = await this._service.search(req.query);
+        result.forEach(entity => this._insertHateoasLinks(entity));
         res.sendResult(result);
         return next();
     }
@@ -47,6 +67,7 @@ export default class AddressController {
      */
     async create(req, res, next) {
         let result = await this._service.create(req.body);
+        this._insertHateoasLinks(result);
 
         res.status(201);
         res.header("Location", `${this._prefix}/${result._id}`);
@@ -61,6 +82,7 @@ export default class AddressController {
      */
     async read(req, res, next) {
         let result = await this._service.read(req.params.id);
+        this._insertHateoasLinks(result);
 
         if (result) {
             res.sendResult(result);
@@ -78,6 +100,7 @@ export default class AddressController {
      */
     async update(req, res, next) {
         let result = await this._service.update(req.params.id, req.body);
+        this._insertHateoasLinks(result);
 
         if (result) {
             res.sendResult(result);

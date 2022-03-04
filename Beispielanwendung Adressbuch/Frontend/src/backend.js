@@ -32,20 +32,55 @@ export default class Backend {
 
     /**
      * Low-level Wrapper um die Fetch API, um diese bei jeder Verwendung mit
-     * denselben Parametern zu versorgen. Wird eigentlich nur innerhalb dieser
-     * Klasse benötigt. Außerhalb der Klasse sollten die anderen Methoeden
-     * verwendet werden, um gezielte Funktionen aufzurufen.
+     * denselben Parametern zu versorgen. Aufrufbeispiel:
      *
-     * @param {string} url - Aufzurufende URL (ohne den Prefix aus `this._url`)
-     * @param {object} options - Konfigurationswerte (optional)
+     *   * backend.fetch("GET", "/address");
+     *   * backend.fetch("GET", "/address", {query: {first_name: "Test"}});
+     *   * backend.fetch("PUT", "/address", {body: { ... }});
+     *
+     * Über das Options-Objekt können Query-Parameter mitgegeben werden, die
+     * als URL-Parameter angehängt werden, sowie Daten, die nach JSON konvertiert
+     * in den Request Body übernommen werden.
+     *
+     * @param {string} url Aufzurufende URL (ohne den Prefix aus `this._url`)
+     * @param {object} options Konfigurationswerte (optional)
      * @returns {Promise} Ergebnis des eigentlichen fetch()-Aufrufs
      */
-    async fetch(url, options) {
+    async fetch(method, url, options) {
         options = options || {};
-        let response = await fetch(`${this._url}${url}`, options);
+
+        // Query-Parameter an die URL anhängen
+        if (options.query) {
+            let parameters = new URLSearchParams();
+
+            for (name in options.query) {
+                parameters.append(name, options.query[name]);
+            }
+
+            url = `${url}?${parameters}`;
+        }
+
+        // HTTP Verb, Header Fields und Body übernehmen
+        let fetchOptions = {
+            method: method,
+            headers: options.headers || {},
+        };
+
+        if (method !== "GET") {
+            fetchOptions.headers["Content-Type"] = "application/json";
+
+            if (options.body) {
+                fetchOptions.body = JSON.stringify(options.body);
+            }
+        }
+
+        fetchOptions.headers["Accept"] = "application/json";
+
+        // REST-Webservice aufrufen
+        let response = await fetch(`${this._url}${url}`, fetchOptions);
 
         if (response.ok) {
-            return response;
+            return await response.json();
         } else {
             // Exception werfen, wenn ein Fehler empfangen wurde
             let contentType = response.headers.get("Content-Type");
@@ -59,90 +94,5 @@ export default class Backend {
                 };
             }
         }
-    }
-
-    /**
-     * Adressen suchen. Unterstützt wird lediglich eine ganz einfache Suche,
-     * bei der einzelne Felder auf exakte Übereinstimmung geprüft werden.
-     *
-     * @param {Object} query Optionale Suchparameter
-     * @return {Promise} Liste der gefundenen Adressen
-     */
-    async searchAddresses(query) {
-        query = query || {};
-
-        let parameters = new URLSearchParams();
-        if (query.first_name) parameters.append("first_name", query.first_name);
-        if (query.last_name) parameters.append("last_name", query.last_name);
-
-        let response = await this.fetch(`/address?${parameters}`);
-        return response.json();
-    }
-
-    /**
-     * Speichern einer neuen Adresse.
-     *
-     * @param {Object} address Zu speichernde Adressdaten
-     * @return {Promise} Gespeicherte Adressdaten
-     * @throws {RestifyError} Fehlerhafte Eingaben
-     */
-    async createAddress(address) {
-        let response = await this.fetch("/address", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-            },
-            body: JSON.stringify(address),
-        });
-
-        return await response.json();
-    }
-
-    /**
-     * Auslesen einer vorhandenen Adresse anhand ihrer ID.
-     *
-     * @param {String} id ID der gesuchten Adresse
-     * @return {Promise} Gefundene Adressdaten
-     */
-    async readAddress(id) {
-        let response = await this.fetch(`/address/${id}`);
-        return response.json();
-    }
-
-    /**
-     * Aktualisierung einer Adresse, durch Überschreiben einzelner Felder
-     * oder des gesamten Adressobjekts (ohne die ID).
-     *
-     * @param {String} id ID der gesuchten Adresse
-     * @param {[type]} address Zu speichernde Adressdaten
-     * @return {Promise} Gespeicherte Adressdaten
-     * @throws {RestifyError} Fehlerhafte Eingaben
-     */
-    async updateAddress(id, address) {
-        let response = await this.fetch(`/address/${id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-            },
-            body: JSON.stringify(address),
-        });
-
-        return await response.json();
-    }
-
-    /**
-     * Löschen einer Adresse anhand ihrer ID.
-     *
-     * @param {String} id ID der gesuchten Adresse
-     * @return {Promise} Anzahl der gelöschten Datensätze
-     */
-    async deleteAddress(id) {
-        let response = await this.fetch(`/address/${id}`, {
-            method: "DELETE",
-        });
-
-        return response.text();
     }
 }

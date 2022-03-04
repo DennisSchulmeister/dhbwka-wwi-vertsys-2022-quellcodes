@@ -15,6 +15,24 @@ servers:
 tags:
 - name: Beispiel
 paths:
+  /:
+    get:
+      tags:
+      - Index
+      summary: Wurzeladresse des Webservices
+      description: Liefert eine HATEOAS-Übersicht aller collections
+      operationId: index
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HATEOAS_Collection'
+                x-content-type: application/json
+
   /example:
     get:
       tags:
@@ -175,10 +193,45 @@ paths:
           description: Not Found
 components:
   schemas:
+    HATEOAS_Collection:
+      title: HATEOAS-Links einer Collection
+      type: object
+      properties:
+        _name:
+          type: string
+        query:
+          $ref: '#/components/schemas/HATEOAS_Link'
+        create:
+          $ref: '#/components/schemas/HATEOAS_Link'
+
+    HATEOAS_Resource:
+      title: HATEOAS-Links einer Resource
+      type: object
+      properties:
+        read:
+          $ref: '#/components/schemas/HATEOAS_Link'
+        update:
+          $ref: '#/components/schemas/HATEOAS_Link'
+        patch:
+          $ref: '#/components/schemas/HATEOAS_Link'
+        delete:
+          $ref: '#/components/schemas/HATEOAS_Link'
+
+    HATEOAS_Link:
+      title: HATEOAS-Link
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+
     Address:
       title: Example
       type: object
       properties:
+        _links:
+          $ref: '#/components/schemas/HATEOAS_Resource'
         _id:
           type: string
         title:

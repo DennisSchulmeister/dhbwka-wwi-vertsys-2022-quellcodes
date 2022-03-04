@@ -39,7 +39,7 @@ export default class PageList extends Page {
         this._title = "Übersicht";
 
         // Platzhalter anzeigen, wenn noch keine Daten vorhanden sind
-        let data = await this._app.backend.searchAddresses();
+        let data = await this._app.backend.fetch("GET", "/address");
         this._emptyMessageElement = this._mainElement.querySelector(".empty-placeholder");
 
         if (data.length) {
@@ -90,7 +90,7 @@ export default class PageList extends Page {
 
         // Datensatz löschen
         try {
-            this._app.backend.deleteAddress(id);
+            this._app.backend.fetch("DELETE", `/address/${id}`);
         } catch (ex) {
             this._app.showException(ex);
             return;
