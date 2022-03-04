@@ -1,5 +1,7 @@
-Beispielanwendung „Adressbuch”
-==============================
+Grundgerüst: SPA mit REST-Backend
+=================================
+
+__TODO: Dokument überarbeiten__
 
 Inhaltsverzeichnis
 ------------------
@@ -12,21 +14,30 @@ Inhaltsverzeichnis
 Kurzbeschreibung
 ----------------
 
-Bei dieser Anwendung handelt es sich um eine Weiterentwicklung der gleichnamigen
-Aufgabe aus der Vorlesung „Webprogrammierung” im 3. Semester. Auch hier wird
-eine einfache Single Page App zur Verwaltung simpler Adressdatensätze implementiert.
+Bei diesem Projekt handelt es sich um eine vom Adressbuchbeispiel abgeleitete
+Vorlage, die Sie zur Erstellung eigener Single Page Apps mit REST-Backend
+verwenden können. Im Gegensatz zum Original werden hier nicht Adressen sondern
+Beispiele verwaltet. :-) Zum Übernehmen gehen Sie wie folgt vor:
 
-Diese Version beinhaltet jedoch neben der Benutzeroberfläche auch ein vollständiges
-REST-Backend zur Ablage der Adressen in einer zentralen Datenbank und auch die
-Struktur des Quellcodes folgt eher modernen Best Practices wie der Nutzung von
-npm zur Verwaltung von Abhängigkeiten und der Nutzung eines Bundlers, um diese
-dem Browser zugänglich zu machen.
+ 1. Kopieren Sie den Inhalt dieses Verzeichnisses in ein neues Verzeichnis
+    für die zu erstellende App (außerhalb dieses Git-Repositories)
+
+ 1. Kopieren Sie die Datei `.gitignore` aus dem Wurzelverzeichnis dieses
+    Git-Repositories in das eben kopierte Verzeichnis.
+
+ 1. Legen Sie ein neues Git-Repository an und commited Sie den kopierten
+    Quellcode. Bei Bedarf laden Sie das Repository auf GitHub hoch.
+
+ 1. Lesen Sie sich die README-Dateien, den Quellcode und die darin enthaltenen
+    Kommentare sorgfältig durch.
+
+ 1. Suchen Sie mit Ihrem Editor nach allen Vorkommen des Worts TODO im
+    gesamten Quellverzeichnis, um die anzupassenden Stellen zu ermitteln.
+
+ 1. Passen Sie die README-Dateien an oder ersetzen diese durch eigene Dateien.
 
 Mit Docker und Docker Compose können die Bestandteile der App einzeln oder
 als Gesamtprojekt ausgeführt werden.
-
-![Screenshot 1](screenshot1.png?raw=true)
-![Screenshot 2](screenshot2.png?raw=true)
 
 Start mit Docker Compose
 ------------------------

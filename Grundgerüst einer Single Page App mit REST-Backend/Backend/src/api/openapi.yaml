@@ -1,10 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Adressbuch
-  description: "Die Adressbuch-App nutzt einen simplen REST-Webservices zur Kommunikation\
-    \ mit dem Backend. Dieser ermöglicht die üblichen CRUD-Operationen zur Suche,\
-    \ Anzeige, Bearbeitung und Löschung von Adressen, wobei jede Adresse aus einem\
-    \ Vornamen, Nachnamen, Telefonnummer und eine E-Mailadresse besteht."
+  title: MyAPP
+  description: "__ TODO: Diese Datei durch eine eigene API-Spezifikation ersetzen. __"
   contact:
     name: Dennis Schulmeister-Zimolong
     url: https://www.wpvs.de
@@ -16,28 +13,28 @@ info:
 servers:
 - url: http://localhost:3000
 tags:
-- name: Adresse
+- name: Beispiel
 paths:
-  /address:
+  /example:
     get:
       tags:
-      - Adresse
-      summary: Adressen suchen
-      description: Suche nach Adressen. Gibt eine Liste aller Adressen passend zu
+      - Beispiel
+      summary: Beispiele suchen
+      description: Suche nach Beispielen. Gibt eine Liste aller Beispieele passend zu
         den übergebenen Suchkriterien zurück.
-      operationId: search-address
+      operationId: search-ExampleController
       parameters:
-      - name: first_name
+      - name: title
         in: query
-        description: Vorname
+        description: Titel
         required: false
         style: form
         explode: true
         schema:
           type: string
-      - name: last_name
+      - name: author
         in: query
-        description: Nachname
+        description: Autor
         required: false
         style: form
         explode: true
@@ -51,21 +48,21 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Address'
+                  $ref: '#/components/schemas/Example'
                 x-content-type: application/json
     post:
       tags:
-      - Adresse
-      summary: Adresse anlegen
-      description: "Neue Adresse anlegen. Speichert die übergebene Adresse in der\
+      - Beispiel
+      summary: Beispiel anlegen
+      description: "Neues Beispiel anlegen. Speichert das übergebene Beispiel in der\
         \ Datenbank. Der Wert des Feldes \"_id\" wird dabei ignoriert, da in jedem Fall\
-        \ eine neue Adresse mit neuer ID angelegt wird."
+        \ eine neue Beispiel mit neuer ID angelegt wird."
       operationId: create-address
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Address'
+              $ref: '#/components/schemas/Example'
       responses:
         "201":
           description: Created
@@ -76,14 +73,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Address'
-  /address/{id}:
+                $ref: '#/components/schemas/Example'
+  /example/{id}:
     get:
       tags:
-      - Adresse
-      summary: Adresse lesen
-      description: Liest eine einzelne Adresse vom Server.
-      operationId: get-address
+      - Beispiel
+      summary: Beispiel lesen
+      description: Liest ein einzelnes Beispiel vom Server.
+      operationId: get-example
       parameters:
       - name: id
         in: path
@@ -98,17 +95,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Address'
+                $ref: '#/components/schemas/Example'
         "404":
           description: Not Found
     put:
       tags:
-      - Adresse
+      - Beispiel
       summary: ""
-      description: "Überschreibt eine vorhandene Adresse auf dem Server. Bis auf die\
+      description: "Überschreibt ein vorhandenes Beispiel auf dem Server. Bis auf die\
         \ ID können alle Felder geändert werden. Der Versuch, die ID zu ändern, wird\
         \ vom Server stillschweigend ignoriert."
-      operationId: update-address
+      operationId: update-example
       parameters:
       - name: id
         in: path
@@ -121,22 +118,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Address'
+              $ref: '#/components/schemas/Example'
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Address'
+                $ref: '#/components/schemas/Example'
         "404":
           description: Not Found
     delete:
       tags:
-      - Adresse
-      summary: Adresse löschen
-      description: Löscht eine Adresse auf dem Server.
-      operationId: delete-address
+      - Beispiel
+      summary: Beispiel löschen
+      description: Löscht ein Beispiel auf dem Server.
+      operationId: delete-example
       parameters:
       - name: id
         in: path
@@ -152,12 +149,12 @@ paths:
           description: Not Found
     patch:
       tags:
-      - Adresse
-      summary: Einzelne Adressfelder ändern
-      description: "Ändert einzelne Felder einer vorhandenen Adresse. Zulässig sind\
+      - Beispiel
+      summary: Einzelne Beispielfelder ändern
+      description: "Ändert einzelne Felder eines vorhandenen Beispiels. Zulässig sind\
         \ alle Felder bis auf die ID, da diese nachträglich nicht mehr verändert werden\
         \ darf."
-      operationId: patch-address
+      operationId: patch-example
       parameters:
       - name: id
         in: path
@@ -170,7 +167,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Address'
+              $ref: '#/components/schemas/Example'
       responses:
         "200":
           description: OK
@@ -179,27 +176,26 @@ paths:
 components:
   schemas:
     Address:
-      title: Adresse
+      title: Example
       type: object
       properties:
         _id:
           type: string
-        first_name:
+        title:
           type: string
-        last_name:
+        author:
           type: string
-        phone:
+        publisher:
           type: string
-        email:
-          type: string
-          pattern: "(.*@.*\\..*)?"
+        year:
+          type: integer
       required:
-        - first_name
-        - last_name
+        - title
+        - author
       example:
         _id: "621ff9a936997df5baba746e"
-        first_name: "Fox"
-        last_name: "Mulder"
-        email: "mulder@xfiles.com"
-        phone: "+49 721 553181"
+        title: "Advanced API Security"
+        author: "Prabath Siriwardena"
+        publisher: "Apress"
+        year: 2020
   securitySchemes: {}

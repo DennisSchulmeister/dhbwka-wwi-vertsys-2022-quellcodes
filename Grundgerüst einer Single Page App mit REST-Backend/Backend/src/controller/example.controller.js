@@ -1,15 +1,17 @@
 "use strict"
 
-import AddressService from "../service/address.service.js";
+//// TODO: Klasse und diese Datei durch eigene Service-Klassen ersetzen ////
+
+import ExampleService from "../service/example.service.js";
 import {wrapHandler} from "../utils.js";
 import RestifyError from "restify-errors";
 
 /**
- * HTTP-Controller-Klasse für Adressbucheinträge. Diese Klasse registriert
+ * HTTP-Controller-Klasse für Beispieleinräge. Diese Klasse registriert
  * alle notwendigen URL-Handler beim Webserver für einen einfachen REST-
- * Webservice zum Lesen und Schreiben von Adressen.
+ * Webservice zum Lesen und Schreiben von Beispielen.
  */
-export default class AddressController {
+export default class ExampleController {
     /**
      * Konstruktor. Hier werden die URL-Handler registrert.
      *
@@ -17,10 +19,10 @@ export default class AddressController {
      * @param {String} prefix Gemeinsamer Prefix aller URLs
      */
     constructor(server, prefix) {
-        this._service = new AddressService();
+        this._service = new ExampleService();
         this._prefix = prefix;
 
-        // Collection: Adressen
+        // Collection: Beispielen
         server.get(prefix, wrapHandler(this, this.search));
         server.post(prefix, wrapHandler(this, this.create));
 
@@ -32,8 +34,8 @@ export default class AddressController {
     }
 
     /**
-     * GET /address
-     * Adressen suchen
+     * GET /example
+     * Beispiele suchen
      */
     async search(req, res, next) {
         let result = await this._service.search(req.query);
@@ -42,8 +44,8 @@ export default class AddressController {
     }
 
     /**
-     * POST /address
-     * Neue Adresse anlegen
+     * POST /example
+     * Neues Beispiel anlegen
      */
     async create(req, res, next) {
         let result = await this._service.create(req.body);
@@ -56,8 +58,8 @@ export default class AddressController {
     }
 
     /**
-     * GET /address/:id
-     * showException: Adresse auslesen
+     * GET /example/:id
+     * showException: Beispiel auslesen
      */
     async read(req, res, next) {
         let result = await this._service.read(req.params.id);
@@ -65,16 +67,16 @@ export default class AddressController {
         if (result) {
             res.sendResult(result);
         } else {
-            throw new RestifyError.NotFoundError("Adresse nicht gefunden");
+            throw new RestifyError.NotFoundError("Beispiel nicht gefunden");
         }
 
         return next();
     }
 
     /**
-     * PUT /address/:id
-     * PATCH /address/:id
-     * showException: Adresse ändern
+     * PUT /example/:id
+     * PATCH /example/:id
+     * showException: Beispiel ändern
      */
     async update(req, res, next) {
         let result = await this._service.update(req.params.id, req.body);
@@ -82,15 +84,15 @@ export default class AddressController {
         if (result) {
             res.sendResult(result);
         } else {
-            throw new RestifyError.NotFoundError("Adresse nicht gefunden");
+            throw new RestifyError.NotFoundError("Beispiel nicht gefunden");
         }
 
         return next();
     }
 
     /**
-     * DELETE /address/:id
-     * showException: Adresse löschen
+     * DELETE /example/:id
+     * showException: Beispiel löschen
      */
     async delete(req, res, next) {
         await this._service.delete(req.params.id)

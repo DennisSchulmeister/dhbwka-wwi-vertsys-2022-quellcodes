@@ -25,7 +25,7 @@ export default class AddressService {
      * @param {Object} query Optionale Suchparameter
      * @return {Promise} Liste der gefundenen Adressen
      */
-    async searchAddresses(query) {
+    async search(query) {
         let cursor = this._addresses.find(query, {
             sort: {
                 first_name: 1,
@@ -42,15 +42,14 @@ export default class AddressService {
      * @param {Object} address Zu speichernde Adressdaten
      * @return {Promise} Gespeicherte Adressdaten
      */
-    async createAddress(address) {
-        // Neue Adresse anlegen
+    async create(address) {
         address = address || {};
 
         let newAddress = {
             first_name: address.first_name || "",
-            last_name:  address.last_name || "",
-            phone:      address.phone || "",
-            email:      address.email || "",
+            last_name:  address.last_name  || "",
+            phone:      address.phone      || "",
+            email:      address.email      || "",
         };
 
         let result = await this._addresses.insertOne(newAddress);
@@ -63,7 +62,7 @@ export default class AddressService {
      * @param {String} id ID der gesuchten Adresse
      * @return {Promise} Gefundene Adressdaten
      */
-    async readAddress(id) {
+    async read(id) {
         let result = await this._addresses.findOne({_id: new ObjectId(id)});
         return result;
     }
@@ -76,7 +75,7 @@ export default class AddressService {
      * @param {[type]} address Zu speichernde Adressdaten
      * @return {Promise} Gespeicherte Adressdaten oder undefined
      */
-    async updateAddress(id, address) {
+    async update(id, address) {
         let oldAddress = await this._addresses.findOne({_id: new ObjectId(id)});
         if (!oldAddress) return;
 
@@ -99,7 +98,7 @@ export default class AddressService {
      * @param {String} id ID der gesuchten Adresse
      * @return {Promise} Anzahl der gelöschten Datensätze
      */
-    async deleteAddress(id) {
+    async delete(id) {
         let result = await this._addresses.deleteOne({_id: new ObjectId(id)});
         return result.deletedCount;
     }
