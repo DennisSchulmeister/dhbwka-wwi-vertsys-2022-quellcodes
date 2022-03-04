@@ -57,6 +57,7 @@ services:
         depends_on:
             - mongodb
         image: node:17-alpine
+        restart: always
         environment:
             HOST: "::"
             PORT: 3000
@@ -72,6 +73,7 @@ services:
     # Adressbuch-Frontend (Entwicklungsmodus)
     frontend:
         image: node:17-alpine
+        restart: always
         ports:
             - 8080:8080
         volumes:

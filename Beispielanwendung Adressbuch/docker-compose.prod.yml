@@ -36,10 +36,11 @@ services:
 
     # Adressbuch-Backend (Produktivmodus)
     backend:
-        depends_on:
-            - mongodb
         build:
             context: ./Backend
+        depends_on:
+            - mongodb
+        restart: always
         environment:
             HOST: "::"
             PORT: 3000
@@ -54,6 +55,7 @@ services:
     frontend:
         build:
             context: ./Frontend
+        restart: always
         environment:
             # Die URL des Backends kann durch die Umgebungsvariable API_URL
             # beim Aufruf von Docker Compose übersteuert werden. Sie wird an
@@ -72,6 +74,7 @@ services:
             - frontend
         build:
             context: ./Gateway
+        restart: always
         ports:
             - 8080:81
 
