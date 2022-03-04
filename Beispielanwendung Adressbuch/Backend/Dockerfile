@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM node:17-alpine AS build
+FROM node:17-alpine
 ENV NODE_ENV=production HOST=:: MONGODB=mongodb://mongodb:27017
 WORKDIR /app
 COPY package.json package-lock.json ./
