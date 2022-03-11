@@ -61,9 +61,11 @@ server.on("restifyError", function(req, res, err, callback) {
 // Außerdem OPTIONS-Anfragen (sog. CORS-Preflight) immer mit Status 200 beantworten,
 // damit die Browser ändernde Aufrufe tatsächlich durchführen.
 server.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", req.header("Origin"));
     res.header("Access-Control-Allow-Methods", req.header("Access-Control-Request-Method"));
     res.header("Access-Control-Allow-Headers", req.header("Access-Control-Request-Headers"));
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Vary", "Origin");
     return next();
 });
 

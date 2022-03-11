@@ -64,6 +64,7 @@ export default class Backend {
         let fetchOptions = {
             method: method,
             headers: options.headers || {},
+            credentials: "include",
         };
 
         if (method !== "GET") {
