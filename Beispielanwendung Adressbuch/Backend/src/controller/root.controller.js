@@ -36,7 +36,7 @@ export default class RootController {
         res.sendResult([
             {
                 _name: "address",
-                query: {url: "/address", method: "GET"},
+                query: {url: "/address", method: "GET", queryParams: ["search", "first_name", "last_name", "phone", "email"]},
                 create: {url: "/address", method: "POST"},
             }
         ]);

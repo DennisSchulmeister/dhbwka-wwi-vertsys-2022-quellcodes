@@ -1,0 +1,61 @@
+#===============================================================================
+# Docker Compose File für die lokale Entwicklung. Startet die folgenden Dienste:
+#
+#  * Ein MongoDB, die im internen Container-Netz für die anderen Container unter
+#    dem Hostnamen "mongodb" auf dem Standardport 27017 erreichbar ist.
+#
+#  * Ein grafisches Admin-Werkzeug für Mongo, das unter http://localhost:8081
+#    im Browser aufgerufen werden kann
+#
+#  * Eine NodeJS-Laufzeitumgebung, in welcher der Backend-Quellcode ausgeführt
+#    wird. Änderungen am Quellcode führen zu einem automatischen Neustart des
+#    Services. Der REST-Webservice kann unter http://localhost:3000 aufgerufen
+#    werden. Unter dem Standardport 9229 kann sich ein JavaScript-Debugger
+#    (z.B. aus dem Chrome Dev Tools) verbinden.
+#===============================================================================
+version: "3.9"
+
+services:
+    # MongoDB-Datenbank
+    mongodb:
+        image: mongo
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: dbuser
+            MONGO_INITDB_ROOT_PASSWORD: dbpass
+        volumes:
+            - dbdata:/data/db
+            - dbconfig:/data/configdb
+
+    # Admin-GUI für MongoDB
+    mongo-gui:
+        image: mongo-express
+        restart: always
+        ports:
+            - 8081:8081
+        environment:
+            ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+            ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+            ME_CONFIG_MONGODB_URL: mongodb://dbuser:dbpass@mongodb:27017/
+
+    # Adressbuch-Backend (Entwicklungsmodus)
+    backend:
+        depends_on:
+            - mongodb
+        image: node:17-alpine
+        restart: always
+        environment:
+            HOST: "::"
+            PORT: 3000
+            MONGODB: mongodb://dbuser:dbpass@mongodb:27017/
+        ports:
+            - 3000:3000
+            - 9229:9229
+        volumes:
+            - .:/app
+        working_dir: /app
+        command: sh -c "npm i; npm start"
+
+volumes:
+    dbdata:
+    dbconfig:

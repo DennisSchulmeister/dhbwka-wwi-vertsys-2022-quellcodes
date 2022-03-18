@@ -33,13 +33,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
       * so dass Clients die URL-Struktur des Webservices entdecken können).
       */
      async index(req, res, next) {
-         //// TODO: Example-Collection hier durch eigene Collections ersetzen ////
          res.sendResult([
-             // {
-             //     _name: "example",
-             //     query: {url: "/example", method: "GET", queryParams: ["search"]},
-             //     create: {url: "/example", method: "POST"},
-             // }
+            {
+                _name: "song",
+                query: {url: "/song", method: "GET", queryParams: ["search", "artist", "name", "releaseYear", "songwriters"]},
+                create: {url: "/song", method: "POST"},
+            }
          ]);
 
          next();

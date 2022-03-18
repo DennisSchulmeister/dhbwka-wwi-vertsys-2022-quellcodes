@@ -67,5 +67,9 @@ components:
           type: string
         method:
           type: string
+        queryParams:
+          type: array
+          items:
+            type: string
 
   securitySchemes: {}

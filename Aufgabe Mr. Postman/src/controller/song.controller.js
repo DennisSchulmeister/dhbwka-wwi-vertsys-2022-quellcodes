@@ -1,15 +1,15 @@
 "use strict"
 
-import AddressService from "../service/address.service.js";
+import SongService from "../service/song.service.js";
 import {wrapHandler} from "../utils.js";
 import RestifyError from "restify-errors";
 
 /**
- * HTTP-Controller-Klasse für Adressbucheinträge. Diese Klasse registriert
- * alle notwendigen URL-Handler beim Webserver für einen einfachen REST-
- * Webservice zum Lesen und Schreiben von Adressen.
+ * HTTP-Controller-Klasse für Songs. Diese Klasse registriert alle notwendigen
+ * URL-Handler beim Webserver für einen einfachen REST-Webservice zum Lesen und
+ * Schreiben von Songs.
  */
-export default class AddressController {
+export default class SongController {
     /**
      * Konstruktor. Hier werden die URL-Handler registrert.
      *
@@ -17,7 +17,7 @@ export default class AddressController {
      * @param {String} prefix Gemeinsamer Prefix aller URLs
      */
     constructor(server, prefix) {
-        this._service = new AddressService();
+        this._service = new SongService();
         this._prefix = prefix;
 
         // Collection: Adressen
@@ -51,8 +51,8 @@ export default class AddressController {
     }
 
     /**
-     * GET /address
-     * Adressen suchen
+     * GET /song
+     * Songs suchen
      */
     async search(req, res, next) {
         let result = await this._service.search(req.query);
@@ -62,8 +62,8 @@ export default class AddressController {
     }
 
     /**
-     * POST /address
-     * Neue Adresse anlegen
+     * POST /song
+     * Neuen Song anlegen
      */
     async create(req, res, next) {
         let result = await this._service.create(req.body);
@@ -77,8 +77,8 @@ export default class AddressController {
     }
 
     /**
-     * GET /address/:id
-     * Adresse auslesen
+     * GET /song/:id
+     * Song auslesen
      */
     async read(req, res, next) {
         let result = await this._service.read(req.params.id);
@@ -87,16 +87,16 @@ export default class AddressController {
         if (result) {
             res.sendResult(result);
         } else {
-            throw new RestifyError.NotFoundError("Adresse nicht gefunden");
+            throw new RestifyError.NotFoundError("Song nicht gefunden");
         }
 
         return next();
     }
 
     /**
-     * PUT /address/:id
-     * PATCH /address/:id
-     * Adresse ändern
+     * PUT /song/:id
+     * PATCH /song/:id
+     * Song ändern
      */
     async update(req, res, next) {
         let result = await this._service.update(req.params.id, req.body);
@@ -105,15 +105,15 @@ export default class AddressController {
         if (result) {
             res.sendResult(result);
         } else {
-            throw new RestifyError.NotFoundError("Adresse nicht gefunden");
+            throw new RestifyError.NotFoundError("Song nicht gefunden");
         }
 
         return next();
     }
 
     /**
-     * DELETE /address/:id
-     * Adresse löschen
+     * DELETE /song/:id
+     * Song löschen
      */
     async delete(req, res, next) {
         await this._service.delete(req.params.id)

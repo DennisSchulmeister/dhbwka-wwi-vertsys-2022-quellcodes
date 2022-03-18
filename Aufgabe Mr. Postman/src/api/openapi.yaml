@@ -1,10 +1,9 @@
 openapi: 3.0.0
 info:
-  title: Adressbuch
-  description: "Die Adressbuch-App nutzt einen simplen REST-Webservices zur Kommunikation\
-    \ mit dem Backend. Dieser ermöglicht die üblichen CRUD-Operationen zur Suche,\
-    \ Anzeige, Bearbeitung und Löschung von Adressen, wobei jede Adresse aus einem\
-    \ Vornamen, Nachnamen, Telefonnummer und eine E-Mailadresse besteht."
+  title: "Aufgabe: Hey, Mr. Postman"
+  description: "Dieser Webservice dient dazu, die typischen HTTP-Aufrufe bei \
+    \ Verwendung eines REST-Webservices mit einem Werkzeug wie Postman (https://www.postman.com/) \
+    \ auszuprobieren. Hierfür wird eine simple API zur Verwaltung von Songs angeboten."
   contact:
     name: Dennis Schulmeister-Zimolong
     url: https://www.wpvs.de
@@ -16,8 +15,7 @@ info:
 servers:
 - url: http://localhost:3000
 tags:
-- name: Index
-- name: Adresse
+- name: Beispiel
 paths:
   /:
     get:
@@ -25,7 +23,6 @@ paths:
       - Index
       summary: Wurzeladresse des Webservices
       description: Liefert eine HATEOAS-Übersicht aller collections
-      operationId: index
       responses:
         "200":
           description: OK
@@ -37,29 +34,41 @@ paths:
                   $ref: '#/components/schemas/HATEOAS_Collection'
                 x-content-type: application/json
 
-  /address:
+  /song:
     get:
       tags:
-      - Adresse
-      summary: Adressen suchen
-      description: Suche nach Adressen. Gibt eine Liste aller Adressen passend zu
-        den übergebenen Suchkriterien zurück.
-      operationId: search-address
+        - Song
+      summary: Song-Collection
+      description: Eine Liste von Songs
       parameters:
-      - name: first_name
+      - name: search
         in: query
-        description: Vorname
         required: false
-        style: form
-        explode: true
+        description: Suchbegriff (alle anderen Parameter werden dann ignoriert)
         schema:
           type: string
-      - name: last_name
+      - name: artist
         in: query
-        description: Nachname
         required: false
-        style: form
-        explode: true
+        description: Künstler (exakte Übereinstimmung)
+        schema:
+          type: string
+      - name: name
+        in: query
+        required: false
+        description: Songname (exakte Übereinstimmung)
+        schema:
+          type: string
+      - name: releaseYear
+        in: query
+        required: false
+        description: Jahr der Veröffentlichung (exakte Übereinstimmung)
+        schema:
+          type: integer
+      - name: songwriters
+        in: query
+        required: false
+        description: Songschreiber (exakte Übereinstimmung)
         schema:
           type: string
       responses:
@@ -70,40 +79,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Address'
+                  $ref: '#/components/schemas/Song'
                 x-content-type: application/json
-    post:
-      tags:
-      - Adresse
-      summary: Adresse anlegen
-      description: "Neue Adresse anlegen. Speichert die übergebene Adresse in der\
-        \ Datenbank. Der Wert des Feldes \"_id\" wird dabei ignoriert, da in jedem Fall\
-        \ eine neue Adresse mit neuer ID angelegt wird."
-      operationId: create-address
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Address'
-      responses:
-        "201":
-          description: Created
-          headers:
-            Location:
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Address'
 
-  /address/{id}:
+  /song/{id}:
     get:
       tags:
-      - Adresse
-      summary: Adresse lesen
-      description: Liest eine einzelne Adresse vom Server.
-      operationId: get-address
+      - Song
+      summary: Song lesen
+      description: Liest einen einzelnen Song vom Server.
       parameters:
       - name: id
         in: path
@@ -118,17 +102,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Address'
+                $ref: '#/components/schemas/Song'
         "404":
           description: Not Found
     put:
       tags:
-      - Adresse
+      - Song
       summary: ""
-      description: "Überschreibt eine vorhandene Adresse auf dem Server. Bis auf die\
+      description: "Überschreibt einen vorhandenen Song auf dem Server. Bis auf die\
         \ ID können alle Felder geändert werden. Der Versuch, die ID zu ändern, wird\
         \ vom Server stillschweigend ignoriert."
-      operationId: update-address
       parameters:
       - name: id
         in: path
@@ -141,22 +124,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Address'
+              $ref: '#/components/schemas/Song'
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Address'
+                $ref: '#/components/schemas/Song'
         "404":
           description: Not Found
     delete:
       tags:
-      - Adresse
-      summary: Adresse löschen
-      description: Löscht eine Adresse auf dem Server.
-      operationId: delete-address
+      - Song
+      summary: Song löschen
+      description: Löscht einen Song auf dem Server.
       parameters:
       - name: id
         in: path
@@ -172,12 +154,11 @@ paths:
           description: Not Found
     patch:
       tags:
-      - Adresse
-      summary: Einzelne Adressfelder ändern
-      description: "Ändert einzelne Felder einer vorhandenen Adresse. Zulässig sind\
+      - Song
+      summary: Einzelne Songfelder ändern
+      description: "Ändert einzelne Felder eines vorhandenen Songs. Zulässig sind\
         \ alle Felder bis auf die ID, da diese nachträglich nicht mehr verändert werden\
         \ darf."
-      operationId: patch-address
       parameters:
       - name: id
         in: path
@@ -190,7 +171,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Address'
+              $ref: '#/components/schemas/Song'
       responses:
         "200":
           description: OK
@@ -236,30 +217,29 @@ components:
           items:
             type: string
 
-    Address:
-      title: Adresse
+    Song:
+      title: Song
       type: object
       properties:
         _links:
           $ref: '#/components/schemas/HATEOAS_Resource'
         _id:
           type: string
-        first_name:
+        artist:
           type: string
-        last_name:
+        name:
           type: string
-        phone:
+        releaseYear:
+          type: integer
+        songwriters:
           type: string
-        email:
-          type: string
-          pattern: "(.*@.*\\..*)?"
       required:
-        - first_name
-        - last_name
+        - name
       example:
         _id: "621ff9a936997df5baba746e"
-        first_name: "Fox"
-        last_name: "Mulder"
-        email: "mulder@xfiles.com"
-        phone: "+49 721 553181"
+        artist: "Elton John"
+        name: "Circle of Life"
+        releaseYear: 1994
+        songwriters: "Tim Rice"
+
   securitySchemes: {}

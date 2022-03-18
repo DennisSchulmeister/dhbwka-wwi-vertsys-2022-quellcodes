@@ -26,7 +26,7 @@ class DatabaseFactory {
     }
 
     /**
-     * Hilfsmethode zum Anlagen von Demodaten. Würde man so in einer
+     * Hilfsmethode zum Anlegen von Demodaten. Würde man so in einer
      * Produktivanwendung natürlich nicht machen, aber so sehen wir
      * wenigstens gleich ein paar Daten.
      */

@@ -4,9 +4,9 @@ import restify from "restify";
 import OpenApiEnforcer from "openapi-enforcer";
 import OpenApiEnforcerMiddleware from "@dschulmeis/restify-openapi-enforcer-middleware";
 
-//// TODO: Weitere Controller-Klassen importieren ////
 import DatabaseFactory from "./database.js";
 import RootController from "./controller/root.controller.js";
+import SongController from "./controller/song.controller.js";
 
 // Verzeichnisnamen der Quellcodedatei ermitteln
 import path from "path";
@@ -33,6 +33,7 @@ const server = restify.createServer({
     // Bei Bedarf notwendige Serverkonfiguration hier erweitern.
     // Vgl. http://restify.com/docs/server-api/#createserver
 });
+
 
 server.use(restify.plugins.acceptParser(server.acceptable));
 server.use(restify.plugins.authorizationParser());
@@ -90,16 +91,15 @@ const openApiEnforcer = await OpenApiEnforcer(openApiFile, {
 server.use(OpenApiEnforcerMiddleware(openApiEnforcer));
 
 // HTTP-Controller registrieren
-//// TODO: Weitere Controller-Klassen hinufügen ////
 new RootController(server, "/");
+new SongController(server, "/song");
 
 // Server tatsächlich starten
 server.listen(config.port, config.host, function() {
-    //// TODO: Konsolenausgabe anpassen (Name des Services usw.) ////
     console.log();
-    console.log("=============");
-    console.log("MyApp-Server");
-    console.log("=============");
+    console.log("=========================");
+    console.log("Aufgabe: Hey, Mr. Postman");
+    console.log("=========================");
     console.log();
     console.log("Ausführung mit folgender Konfiguration:");
     console.log();
