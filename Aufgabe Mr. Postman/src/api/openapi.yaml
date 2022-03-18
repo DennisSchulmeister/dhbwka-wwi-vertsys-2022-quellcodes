@@ -15,7 +15,9 @@ info:
 servers:
 - url: http://localhost:3000
 tags:
-- name: Beispiel
+- name: Index
+- name: Song
+
 paths:
   /:
     get:
