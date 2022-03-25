@@ -214,7 +214,7 @@ components:
           type: string
         method:
           type: string
-        queryParams:
+        query_params:
           type: array
           items:
             type: string
@@ -231,7 +231,7 @@ components:
           type: string
         name:
           type: string
-        releaseYear:
+        release_year:
           type: integer
         songwriters:
           type: string
@@ -241,7 +241,7 @@ components:
         _id: "621ff9a936997df5baba746e"
         artist: "Elton John"
         name: "Circle of Life"
-        releaseYear: 1994
+        release_year: 1994
         songwriters: "Tim Rice"
 
   securitySchemes: {}

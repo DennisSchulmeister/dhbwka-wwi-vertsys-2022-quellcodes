@@ -35,16 +35,16 @@ class DatabaseFactory {
 
         if (await songs.estimatedDocumentCount() === 0) {
             songs.insertMany([
-                {artist: "Elton John",   name: "Goodbye Yellow Brick Road", releaseYear: 1973,  songwriters: "Bernie Taupin, Elton John"},
-                {artist: "Elton John",   name: "Candle In The Wind",        releaseYear: 1973,  songwriters: "Bernie Taupin, Elton John"},
-                {artist: "Elton John",   name: "Blue Wonderful",            releaseYear: 2016,  songwriters: "Bernie Taupin, Elton John"},
-                {artist: "Dire Straits", name: "Brothers In Arms",          releaseYear: 1985,  songwriters: "Mark Knopfler"},
-                {artist: "Dire Straits", name: "Calling Elvis",             releaseYear: 1991,  songwriters: "Mark Knopfler"},
-                {artist: "The Eagles",   name: "Tequila Sunrise",           releaseYear: 1973,  songwriters: "Don Henley, Glenn Frey"},
-                {artist: "The Eagles",   name: "Busy Being Fabulous",       releaseYear: 2007,  songwriters: "Don Henley, Glenn Frey"},
-                {artist: "O.M.D.",       name: "Walking On The Milkiway",   releaseYear: 1996,  songwriters: "McCluskey, Nigel Ipinson, Keith Small"},
-                {artist: "Dire Straits", name: "Sultans of Swing",          releaseYear: 1978,  songwriters: "Mark Knopfler"},
-                {artist: "Queen",        name: "I Want To Break Free",      releaseYear: 1984,  songwriters: "John Deacon"},
+                {artist: "Elton John",   name: "Goodbye Yellow Brick Road", release_year: 1973,  songwriters: "Bernie Taupin, Elton John"},
+                {artist: "Elton John",   name: "Candle In The Wind",        release_year: 1973,  songwriters: "Bernie Taupin, Elton John"},
+                {artist: "Elton John",   name: "Blue Wonderful",            release_year: 2016,  songwriters: "Bernie Taupin, Elton John"},
+                {artist: "Dire Straits", name: "Brothers In Arms",          release_year: 1985,  songwriters: "Mark Knopfler"},
+                {artist: "Dire Straits", name: "Calling Elvis",             release_year: 1991,  songwriters: "Mark Knopfler"},
+                {artist: "The Eagles",   name: "Tequila Sunrise",           release_year: 1973,  songwriters: "Don Henley, Glenn Frey"},
+                {artist: "The Eagles",   name: "Busy Being Fabulous",       release_year: 2007,  songwriters: "Don Henley, Glenn Frey"},
+                {artist: "O.M.D.",       name: "Walking On The Milkiway",   release_year: 1996,  songwriters: "McCluskey, Nigel Ipinson, Keith Small"},
+                {artist: "Dire Straits", name: "Sultans of Swing",          release_year: 1978,  songwriters: "Mark Knopfler"},
+                {artist: "Queen",        name: "I Want To Break Free",      release_year: 1984,  songwriters: "John Deacon"},
             ]);
         }
     }

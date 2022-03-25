@@ -67,7 +67,7 @@ components:
           type: string
         method:
           type: string
-        queryParams:
+        query_params:
           type: array
           items:
             type: string

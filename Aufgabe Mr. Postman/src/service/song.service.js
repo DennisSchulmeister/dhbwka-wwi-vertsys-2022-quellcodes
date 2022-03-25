@@ -30,17 +30,17 @@ export default class SongService {
         if (query.search) {
             queryDoc = {
                 $or: [
-                    {artist:      {$regex: query.search, $options: "i"}},
-                    {name:        {$regex: query.search, $options: "i"}},
-                    {releaseYear: {$regex: query.search, $options: "i"}},
-                    {songwriters: {$regex: query.search, $options: "i"}},
+                    {artist:       {$regex: query.search, $options: "i"}},
+                    {name:         {$regex: query.search, $options: "i"}},
+                    {release_year: {$regex: query.search, $options: "i"}},
+                    {songwriters:  {$regex: query.search, $options: "i"}},
                 ]
             };
         } else {
-            if (query.artist)      queryDoc.artist      = query.artist;
-            if (query.name)        queryDoc.name        = query.name;
-            if (query.releaseYear) queryDoc.releaseYear = parseInt(query.releaseYear);
-            if (query.songwriters) queryDoc.songwriters = query.songwriters;
+            if (query.artist)       queryDoc.artist       = query.artist;
+            if (query.name)         queryDoc.name         = query.name;
+            if (query.release_year) queryDoc.release_year = parseInt(query.release_year);
+            if (query.songwriters)  queryDoc.songwriters  = query.songwriters;
         }
 
 console.log(queryDoc);
@@ -65,10 +65,10 @@ console.log(queryDoc);
         song = song || {};
 
         let newSong = {
-            artist:      song.artist      || "",
-            name:        song.name        || "",
-            releaseYear: song.releaseYear || -1,
-            songwriters: song.songwriters || "",
+            artist:       song.artist      || "",
+            name:         song.name        || "",
+            release_year: song.release_year || -1,
+            songwriters:  song.songwriters || "",
         };
 
         let result = await this._songs.insertOne(newSong);
@@ -102,10 +102,10 @@ console.log(queryDoc);
             $set: {},
         }
 
-        if (song.artist)      updateDoc.$set.artist      = song.aritst;
-        if (song.name)        updateDoc.$set.name        = song.name;
-        if (song.releaseYear) updateDoc.$set.releaseYear = song.releaseYear;
-        if (song.songwriters) updateDoc.$set.songwriters = song.songwriters;
+        if (song.artist)       updateDoc.$set.artist       = song.aritst;
+        if (song.name)         updateDoc.$set.name         = song.name;
+        if (song.release_year) updateDoc.$set.release_year = song.release_year;
+        if (song.songwriters)  updateDoc.$set.songwriters  = song.songwriters;
 
         await this._songs.updateOne({_id: new ObjectId(id)}, updateDoc);
         return this._songs.findOne({_id: new ObjectId(id)});
