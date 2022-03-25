@@ -90,7 +90,7 @@ const openApiEnforcer = await OpenApiEnforcer(openApiFile, {
 server.use(OpenApiEnforcerMiddleware(openApiEnforcer));
 
 // HTTP-Controller registrieren
-//// TODO: Weitere Controller-Klassen hinufügen ////
+//// TODO: Weitere Controller-Klassen hinzufügen ////
 new RootController(server, "/");
 
 // Server tatsächlich starten
