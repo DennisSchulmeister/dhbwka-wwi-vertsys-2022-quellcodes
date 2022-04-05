@@ -4,14 +4,10 @@ import {wrapHandler} from "../utils.js";
 import path from "path";
 import { readFile } from "fs/promises";
 
-// Verzeichnisnamen der Quellcodedatei ermitteln
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
 /**
  * Controller für die Wurzeladresse des Webservices. Ermöglicht in dieser
- * Fassung den Abruf der OpenAPI-Spezifikation unter `/?openapi`.
+ * Fassung den Abruf der OpenAPI-Spezifikation unter `/?openapi` sowie den
+ * Abruf einer HATEOAS-Übersucht unter `/`.
  */
 export default class RootController {
     /**
@@ -19,9 +15,10 @@ export default class RootController {
      *
      * @param {Object} server Restify Serverinstanz
      * @param {String} prefix Gemeinsamer Prefix aller URLs
+     * @param {String} openApiFile Pfad zur OpenAPI-Datei
      */
-    constructor(server, prefix) {
-        this._openApiFile = path.normalize(path.join(__dirname, "..", "api", "openapi.yaml"));
+    constructor(server, prefix, openApiFile) {
+        this._openApiFile = openApiFile;
 
         server.get(prefix, wrapHandler(this, this.index));
         server.get(prefix + "/openapi.yaml", wrapHandler(this, this.openApi));
