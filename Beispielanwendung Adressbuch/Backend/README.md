@@ -6,6 +6,7 @@ Inhaltsverzeichnis
 
 1. [Kurzbeschreibung](#kurzbeschreibung)
 1. [Start mit Docker Compose](#start-mit-docker-compose)
+1. [Bekannte Probleme unter Windows](#bekannte-probleme-unter-windows)
 1. [Manueller Start der MongoDB](#manueller-start-der-mongodb)
 1. [Node.js-Kommandozeilenbefehle](#nodejs-kommandozeilenbefehle)
 1. [Node.js in Docker ausführen](#nodejs-in-docker-ausführen)
@@ -33,6 +34,32 @@ Befehle im Detail:
 Die nachfolgenden Abschnitte in dieser Datei beschreiben hingegen, was dabei im
 Hintergrund passiert bzw. wie das Backend mit und ohne Docker isoliert gestartet
 werden kann.
+
+Bekannte Probleme unter Windows
+-------------------------------
+
+Da Docker eine Linux-Technologie ist, verwendet Docker unter Windows inzwischen
+das „Windows Subsystem for Linux”, das die Ausführung von Linux-Software unter
+Windows ermöglicht. Mit diesem gibt es (Stand Mai 2022) jedoch ein bekanntes
+Problem, das den Automatischen Neustart des Backend-Services verhindert
+(siehe [Stackoverflow](https://stackoverflow.com/questions/39239686/nodemon-doesnt-restart-in-windows-docker-environment)),
+wenn sich die Quellcode-Dateien verändern. Als Folge daraus muss der Docker-Container
+nach jeder Codeänderung manuell neugestartet werden, um die Änderung zu testen.
+
+Als Lösung ändern Sie folgende Zeile in der Datei `package.json`:
+
+```json
+"start": "nodemon --inspect=0.0.0.0:9229 src/index.js",
+```
+
+Die neue Version muss wie folgt lauten:
+
+```json
+"start": "nodemon --legacy-watch --inspect=0.0.0.0:9229 src/index.js",
+```
+
+Dadurch werden die Änderungen an den Quellcode-Dateien auf eine andere Weise
+erkannt, so dass der automatische Neustart wieder funktioniert.
 
 Manueller Start der MongoDB
 ---------------------------
