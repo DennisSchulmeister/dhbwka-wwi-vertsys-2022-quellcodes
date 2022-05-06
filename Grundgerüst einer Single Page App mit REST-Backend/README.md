@@ -56,6 +56,12 @@ wie folgt vor:
  1. Rufen Sie die Startseite des Git-Repositories in GitHub auf.
  1. Schreiben Sie `https://gitpod.io/#` vor die GitHub-URL, um die IDE zu starten.
 
+Zusätzlich sollten Sie einmal die URL `https://gitpod.io/integrations` aufrufen
+und dort für GitHub die Berechtigungen `public_repo` und ggf. `repo` auswählen,
+um Änderungen am Quellcode aus der IDE heraus nach GitHub pushen zu können.
+Andernfalls können Sie zwar Versionseinträge mit Git erzeugen, dieser aber nicht
+an GitHub übertragen.
+
 Innerhalb der Online-IDE können Sie über das Menü ein neues Terminal öffnen,
 in dem alle Befehle ausgeführt werden können. Dabei müssen Sie lediglich
 darauf achten, die TCP-Ports aller ausgeführten Serverdienste (z.B. für die
