@@ -8,9 +8,10 @@ import { serve } from "esbuild";
 import { lessLoader } from "esbuild-plugin-less";
 import path from "path";
 
-serve({
+import http from "http";
+
+let serveResult = await serve({
     servedir: path.join(__dirname, "..", "static"),
-    port: 8080,
 }, {
     entryPoints: [path.join(__dirname, "..", "src", "app.js")],
     bundle: true,
@@ -31,6 +32,34 @@ serve({
         ".png": "dataurl",
         ".gif": "dataurl",
     },
-}).then(() => {
-    console.log("Listening on port 8080");
+});
+
+http.createServer((req, res) => {
+    const {host, port} = serveResult;
+
+    const options = {
+        hostname: host,
+        port: port,
+        path: req.url,
+        method: req.method,
+        headers: req.headers,
+    };
+
+    if (req.url === "/api.url") {
+        // Sonderbehanldung für /api.url: Inhalt kommt aus $API_URL
+        res.writeHead(200);
+        res.write(process.env.API_URL);
+        res.end();
+    } else {
+        // HTTP-Anfrage an esbuild weiterleiten
+        const proxyReq = http.request(options, proxyRes => {
+            res.writeHead(proxyRes.statusCode, proxyRes.headers);
+            proxyRes.pipe(res, {end: true});
+        });
+      
+        req.pipe(proxyReq, {end: true});
+    }
+}).listen(8080, () => {
+    console.log("Listening on port 8080.");
+    console.log(`API_URL is ${process.env.API_URL}.`);
 });

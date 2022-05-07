@@ -45,6 +45,12 @@ wie folgt vor:
  1. Rufen Sie die Startseite des Git-Repositories in GitHub auf.
  1. Schreiben Sie `https://gitpod.io/#` vor die GitHub-URL, um die IDE zu starten.
 
+Zusätzlich sollten Sie einmal die URL `https://gitpod.io/integrations` aufrufen
+und dort für GitHub die Berechtigungen `public_repo` und ggf. `repo` auswählen,
+um Änderungen am Quellcode aus der IDE heraus nach GitHub pushen zu können.
+Andernfalls können Sie zwar Versionseinträge mit Git erzeugen, dieser aber nicht
+an GitHub übertragen.
+
 Innerhalb der Online-IDE können Sie über das Menü ein neues Terminal öffnen,
 in dem alle Befehle ausgeführt werden können. Dabei müssen Sie lediglich
 darauf achten, die TCP-Ports aller ausgeführten Serverdienste (z.B. für die
@@ -54,21 +60,33 @@ zugänglich zu machen:
 
 ![Remote Explorer in der Gitpod Online-IDE](gitpod1.png)
 
-Indem Sie dann das Preview-Icon direkt neben der Freigabe anklicken, öffnet sich
-im selben Browser-Tab ein neuer Bereich mit einem eingebetteten Browser-Fenster.
+Starten Sie daher zunächst wie gewohnt mit Docker Compose all Dienste und öffnen
+dann links den „Remote Explorer”.
+
+```sh
+docker-compose -f docker-compose.dev.yml up
+```
+
+Im Remote Explorer klicken Sie das Preview-Icon direkt neben Port 3000 des
+Backendservices. Dadurch öffnet sich rechts ein neuer Bereich, aus dessen
+Adresszeile Sie die öffentliche URL des Backend-Services herauskopieren
+können:
 
 ![Vorschau des Backend-Service in GitPod](gitpod2.png)
 
-Dort können Sie sich vom Backend-Service mit der Portnummer 3000 die öffentliche
-URL kopieren. Diese sollten Sie vor Start aller Services als Umgebungsvariable
-API_URL exportieren. Achten Sie dabei darauf, dass die URL keinen abschließenden
-Slash beinhalten darf!
+Diese exportieren Sie mit folgenden Befehlen als Umgebungsvariable und starten
+daraufhin alle Services neu:
 
 ```sh
 export API_URL=https://3000-….gitpod.io
+
+docker-compose -f docker-compose.dev.yml down
+docker-compose -f docker-compose.dev.yml up
 ```
 
-Anschließend sollte alles wie es soll funktionieren.
+Anschließend sollte alles wie es soll funktionieren. Das Frontend erreichen Sie,
+indem Sie im Remote Explorer die Vorschau für den Service mit der Portnummer 8080
+öffnen.
 
 Start mit Docker Compose
 ------------------------

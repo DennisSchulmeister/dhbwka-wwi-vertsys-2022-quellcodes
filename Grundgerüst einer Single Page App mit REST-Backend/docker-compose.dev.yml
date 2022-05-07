@@ -74,6 +74,14 @@ services:
     frontend:
         image: node:17-alpine
         restart: always
+        environment:
+            # Die URL des Backends kann durch die Umgebungsvariable API_URL
+            # beim Aufruf von Docker Compose übersteuert werden. Sie wird an
+            # die gleichnamige Umgebungsvariable im Container durchgereicht
+            # und von dort für die Single Page App via HTTP abrufbar gemacht.
+            # In einem echten Produktivsetup müsste hier statt localhost
+            # natürlich ein richtiger Hostname eingetragen werden.
+            API_URL: ${API_URL:-http://localhost:8080/api}
         ports:
             - 8080:8080
         volumes:
