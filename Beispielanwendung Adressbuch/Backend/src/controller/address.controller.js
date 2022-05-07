@@ -82,9 +82,9 @@ export default class AddressController {
      */
     async read(req, res, next) {
         let result = await this._service.read(req.params.id);
-        this._insertHateoasLinks(result);
 
         if (result) {
+            this._insertHateoasLinks(result);
             res.sendResult(result);
         } else {
             throw new RestifyError.NotFoundError("Adresse nicht gefunden");
@@ -100,9 +100,9 @@ export default class AddressController {
      */
     async update(req, res, next) {
         let result = await this._service.update(req.params.id, req.body);
-        this._insertHateoasLinks(result);
 
         if (result) {
+            this._insertHateoasLinks(result);
             res.sendResult(result);
         } else {
             throw new RestifyError.NotFoundError("Adresse nicht gefunden");
