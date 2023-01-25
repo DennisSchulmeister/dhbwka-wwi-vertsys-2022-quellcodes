@@ -59,7 +59,7 @@ Zum Starten der Anwendung öffnen Sie ein Terminal und führen dort folgenden Be
 aus:
 
 ```sh
-./start-docker-dev.sh`
+./start-docker-dev.sh
 ```
 
 ![Terminal öffnen](Screenshots/gitpod-open-terminal.png)
@@ -67,7 +67,7 @@ aus:
 ![Anwendung starten](Screenshots/gitpod-start-app.png)
 
 Bestätigen Sie die Hinweise des Skripts mit Enter und warten Sie, bis die
-Konsolenausgaben des Backendservices erscheinen. GitPos sollte am rechten
+Konsolenausgaben des Backendservices erscheinen. GitPod sollte am rechten
 Bildschirmrand darauf aufmerksam machen, dass neue TCP-Ports geöffnet wurden.
 
 Wechseln Sie nun auf den Reiter „Ports” und erlauben Sie öffentliche Zugriffe
@@ -77,11 +77,19 @@ in der Cloudumgebung laufenden Backendservices aufrufen kann.
 ![Port 3000 freigeben](Screenshots/gitpod-port-public.png)
 
 Anschließend kopieren Sie die URL der Frontend-App und rufen diese in einem
-neuen Browser-Tap auf:
+neuen Browser-Tab auf:
 
 ![Frontend-URL kopieren](Screenshots/gitpod-copy-url.png)
 
 ![Frontend im neuen Browserfenster starten](Screenshots/gitpod-open-app.png)
+
+Die Services starten automatisch neu, wenn eine Codeänderung erkannt wird.
+Sie können daher einfach im Browser die Seite neuladen, um eine Änderung
+auszuprobieren. Bei Fehlern beachten Sie bitte unbedingt die Logausgaben
+im Terminal. Sie sind kryptisch, aber hilfreich!
+
+Zum Stoppen der Anwendung wechseln Sie zurück zum Terminal und drücken
+dort Strg+C.
 
 Docker Compose auf dem eigenen Rechner
 -------------------------------------
@@ -111,6 +119,14 @@ Folgende URLs können Sie zum Testen der Anwendung verwenden:
  * Backend-Service über API-Gateway: http://localhost:8080/api
  * Frontend: http://localhost:8080
  * Datenbank-Admin: http://localhost:8081
+
+Die Services starten automatisch neu, wenn eine Codeänderung erkannt wird.
+Sie können daher einfach im Browser die Seite neuladen, um eine Änderung
+auszuprobieren. Bei Fehlern beachten Sie bitte unbedingt die Logausgaben
+im Terminal. Sie sind kryptisch, aber hilfreich!
+
+Zum Stoppen der Anwendung wechseln Sie zurück zum Terminal und drücken
+dort Strg+C.
 
 Technische Hintergründe zum Startskript
 --------------------------------------
