@@ -28,8 +28,8 @@ Start mit Docker Compose
 
 Am einfachsten lässt sich die App mit Docker Compose starten:
 
- * `docker-compose -f docker-compose.dev.yml up -d` zum Starten aller Dienste
- * `docker-compose -f docker-compose.dev.yml down` zum Stoppen aller Dienste
+ * `docker-compose up` zum Starten aller Dienste
+ * `docker-compose down` zum Stoppen aller Dienste
  * `docker system prune` zum Aufräumen nicht mehr benötigter Dateien
 
 Node.js-Kommandozeilenbefehle

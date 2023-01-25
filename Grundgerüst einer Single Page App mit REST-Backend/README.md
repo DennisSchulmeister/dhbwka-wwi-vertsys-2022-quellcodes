@@ -1,14 +1,13 @@
 Grundgerüst: SPA mit REST-Backend
 =================================
 
-__TODO: Dokument überarbeiten__
-
 Inhaltsverzeichnis
 ------------------
 
  1. [Kurzbeschreibung](#kurzbeschreibung)
  1. [Nutzung der Gitpod Online-IDE](#nutzung-der-gitpod-online-ide)
- 1. [Start mit Docker Compose](#start-mit-docker-compose)
+ 1. [Docker Compose auf dem eigenen Rechner][#docker-compose-auf-dem-eigenen-rechner]
+ 1. [Technische Hintergründe zum Startskript](#technische-hintergründe-zum-startskript)
  1. [Start einzelner Services mit und ohne Docker](#start-einzelner-services-mit-und-ohne-docker)
  1. [Hinwes zu Podman unter Linux](#hinweis-zu-podman-unter-linux)
 
@@ -43,13 +42,16 @@ als Gesamtprojekt ausgeführt werden.
 Nutzung der Gitpod Online-IDE
 ----------------------------
 
-Falls Sie auf Ihrem Rechner gar keine Software installieren können oder die
-Installation von Docker nicht geklappt hapt (bspw. weil Sie die Home-Edition
-von Microsoft Windows nutzen), können Sie das Beispiel auch in der GitPod
-Online-IDE bearbeiten. Diese stellt Ihnen neben der IDE auch eine Linux-Umgebung
-mit vorinstallierten Werkzeugen für Docker und Node.js zur Verfügung, so dass
-Sie alle hier gezeigten Befehle direkt ausführen können. Gehen Sie hierfür
-wie folgt vor:
+Am einfachsten lässt sich die Anwendung in der Gitpod Online IDE starten.
+Denn hier haben Sie nicht nur eine mit Visual Studio Code vergleichbare IDE
+zur Verfügung, sondern auch ein vollständiges Linux-System, auf dem bereits
+alle notwendigen Werkzeuge installiert sind.
+
+Zum Testen können Sie das Git-Repository aus der Vorlesung verwenden. Sie
+müssen lediglich `https://gitpod.io/#` vor die GitHub-URL schreiben, um die
+IDE zu starten.
+
+Zum Entwickeln müssen Sie allerdings ein eigenes Git-Repository anlegen:
 
  1. Importieren Sie den Quellcode in ein neues Git-Repository.
  1. Laden Sie das Git-Repository auf GitHub hoch und machen es public.
@@ -62,45 +64,81 @@ um Änderungen am Quellcode aus der IDE heraus nach GitHub pushen zu können.
 Andernfalls können Sie zwar Versionseinträge mit Git erzeugen, dieser aber nicht
 an GitHub übertragen.
 
-Innerhalb der Online-IDE können Sie über das Menü ein neues Terminal öffnen,
-in dem alle Befehle ausgeführt werden können. Dabei müssen Sie lediglich
-darauf achten, die TCP-Ports aller ausgeführten Serverdienste (z.B. für die
-MongoDB oder den Backend-Webservice) auf der linken Seite über den sog.
-„Remote Explorer” freizuschalten und somit über eine öffentliche URL
-zugänglich zu machen:
-
-![Remote Explorer in der Gitpod Online-IDE](gitpod1.png)
-
-Starten Sie daher zunächst wie gewohnt mit Docker Compose all Dienste und öffnen
-dann links den „Remote Explorer”.
+Zum Starten der Anwendung öffnen Sie ein Terminal und führen dort folgenden Befehl
+aus:
 
 ```sh
-docker-compose -f docker-compose.dev.yml up
+./start-docker-dev.sh
 ```
 
-Im Remote Explorer klicken Sie das Preview-Icon direkt neben Port 3000 des
-Backendservices. Dadurch öffnet sich rechts ein neuer Bereich, aus dessen
-Adresszeile Sie die öffentliche URL des Backend-Services herauskopieren
-können:
+![Terminal öffnen](Screenshots/gitpod-open-terminal.png)
 
-![Vorschau des Backend-Service in GitPod](gitpod2.png)
+![Anwendung starten](Screenshots/gitpod-start-app.png)
 
-Diese exportieren Sie mit folgenden Befehlen als Umgebungsvariable und starten
-daraufhin alle Services neu:
+Bestätigen Sie die Hinweise des Skripts mit Enter und warten Sie, bis die
+Konsolenausgaben des Backendservices erscheinen. GitPod sollte am rechten
+Bildschirmrand darauf aufmerksam machen, dass neue TCP-Ports geöffnet wurden.
 
-```sh
-export API_URL=https://3000-….gitpod.io
+Wechseln Sie nun auf den Reiter „Ports” und erlauben Sie öffentliche Zugriffe
+auf Port 3000. Diese benötigen Sie, damit die Frontend Single Page App die
+in der Cloudumgebung laufenden Backendservices aufrufen kann.
 
-docker-compose -f docker-compose.dev.yml down
-docker-compose -f docker-compose.dev.yml up
-```
+![Port 3000 freigeben](Screenshots/gitpod-port-public.png)
 
-Anschließend sollte alles wie es soll funktionieren. Das Frontend erreichen Sie,
-indem Sie im Remote Explorer die Vorschau für den Service mit der Portnummer 8080
-öffnen.
+Anschließend kopieren Sie die URL der Frontend-App und rufen diese in einem
+neuen Browser-Tab auf:
 
-Start mit Docker Compose
-------------------------
+![Frontend-URL kopieren](Screenshots/gitpod-copy-url.png)
+
+![Frontend im neuen Browserfenster starten](Screenshots/gitpod-open-app.png)
+
+Die Services starten automatisch neu, wenn eine Codeänderung erkannt wird.
+Sie können daher einfach im Browser die Seite neuladen, um eine Änderung
+auszuprobieren. Bei Fehlern beachten Sie bitte unbedingt die Logausgaben
+im Terminal. Sie sind kryptisch, aber hilfreich!
+
+Zum Stoppen der Anwendung wechseln Sie zurück zum Terminal und drücken
+dort Strg+C.
+
+Docker Compose auf dem eigenen Rechner
+-------------------------------------
+
+Um die Entwicklung möglichst zu vereinfachen und nicht viel Zeit mit dem Installieren
+von Werkzeugen und Hilfsprogrammen zu verlieren, verwendet dieses Projekt Docker und
+Docker Compose, um alle benötigten Dienste zu verwalten. Auf Ihrem Rechner benötigen
+Sie daher lediglich:
+
+ 1. Eine beliebige IDE, empfohlen [Visual Studio Code](https://code.visualstudio.com/)
+ 2. [Docker](https://www.docker.com/products/docker-desktop/)
+
+Beachten Sie aber die Lizenzeinschränkungen für Docker Desktop! Für den persönlichen
+Gebrauch ist es kostenlos, die kommerzielle Nutzung muss aber kostenpflichtlg lizenziert
+werden. Unter Linux gibt es diese Einschränkung nicht, da die Engine von Docker freie
+Software ist. 😊 Alternativ können Sie unter Linux auch [Podman](https://podman.io/)
+statt Docker verwenden.
+
+Zum Starten der Anwendung rufen Sie lediglich in einer Konsole das Skript
+`start-docker-dev.sh` (Linux und Mac) bzw. `start-docker-dev.bat` auf zbd
+bestätigen die Hinweise des Skripts mit Enter. Mit Strg+C können Sie die
+Anwendung wieder stoppen.
+
+Folgende URLs können Sie zum Testen der Anwendung verwenden:
+
+ * Backend-Service direkt: http://localhost:3000
+ * Backend-Service über API-Gateway: http://localhost:8080/api
+ * Frontend: http://localhost:8080
+ * Datenbank-Admin: http://localhost:8081
+
+Die Services starten automatisch neu, wenn eine Codeänderung erkannt wird.
+Sie können daher einfach im Browser die Seite neuladen, um eine Änderung
+auszuprobieren. Bei Fehlern beachten Sie bitte unbedingt die Logausgaben
+im Terminal. Sie sind kryptisch, aber hilfreich!
+
+Zum Stoppen der Anwendung wechseln Sie zurück zum Terminal und drücken
+dort Strg+C.
+
+Technische Hintergründe zum Startskript
+--------------------------------------
 
 Das Wurzelverzeichnis beinhaltet zwei Docker Compose Files, mit denen die
 Anwendung im Entwicklungs- oder Produktivmodus gestartet werden kann:
@@ -145,10 +183,11 @@ graph LR
     B[Backend] --> M[MongoDB];
 ```
 
-Das Vorgehen zum Starten und Stoppen der Anwendung ist für beide Modus gleich.
-Lediglich der Dateiname muss in den folgenden Befehlen angepasst werden:
+Das Vorgehen zum Starten und Stoppen der Anwendung ohne das Hilfsskript ist
+für beide Modus gleich. Lediglich der Dateiname muss in den folgenden Befehlen
+angepasst werden:
 
- * `docker-compose -f docker-compose.dev.yml up -d` zum Starten aller Dienste
+ * `docker-compose -f docker-compose.dev.yml up` zum Starten aller Dienste
  * `docker-compose -f docker-compose.dev.yml down` zum Stoppen aller Dienste
  * `docker system prune` zum Aufräumen nicht mehr benötigter Dateien
 
@@ -169,6 +208,10 @@ verbinden versucht:
 export API_URL=http://api.beispiel.de
 docker-compose -f docker-compose.prod.yml up -d
 ```
+
+Dies wird auch verwendet, um die Adresse des Backendservices in der GitPod
+Online-IDE zu setzen, da dort alle Services in einer Cloudumgebung ausgeführt
+werden.
 
 Dies Funktioniert, indem die Umgebungsvariable in der `docker-compose.prod.yml`
 an die gleichnamige Umgebungsvariable des Frontend-Containers übergeben und
@@ -199,3 +242,6 @@ durchgesetzt, u.a. weil es ohne Root-Rechte und einen im Hintergrund laufenden
 Daemon-Prozess auskommt. Alle in diesem Projekt gezeigte Befehle funktionieren
 nahezu unverändert auch mit Podman. Es muss lediglich `docker` durch `podman`
 bzw. `docker-compose` durch `podman-compose` ersetzt werden.
+
+Falls Sie die vordefinierten Hilfsskripte zum Starten und Stoppen der Anwendung
+verwenden wollen, passen Sie diese ganz am Ende ebenfalls entsprechend an.
