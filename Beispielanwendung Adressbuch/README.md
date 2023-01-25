@@ -6,7 +6,7 @@ Inhaltsverzeichnis
 
  1. [Kurzbeschreibung](#kurzbeschreibung)
  1. [Nutzung der Gitpod Online-IDE](#nutzung-der-gitpod-online-ide)
- 1. [Docker Compose auf dem eigenen Rechner][#docker-compose-auf-dem-eigenen-rechner]
+ 1. [Docker Compose auf dem eigenen Rechner](#docker-compose-auf-dem-eigenen-rechner)
  1. [Technische Hintergründe zum Startskript](#technische-hintergründe-zum-startskript)
  1. [Start einzelner Services mit und ohne Docker](#start-einzelner-services-mit-und-ohne-docker)
  1. [Hinwes zu Podman unter Linux](#hinweis-zu-podman-unter-linux)
