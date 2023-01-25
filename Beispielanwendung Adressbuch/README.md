@@ -96,7 +96,7 @@ Docker Compose auf dem eigenen Rechner
 
 Um die Entwicklung möglichst zu vereinfachen und nicht viel Zeit mit dem Installieren
 von Werkzeugen und Hilfsprogrammen zu verlieren, verwendet dieses Projekt Docker und
-Docker Compose, um alle benötigten Dienste zu verwalten. Auf Ihrem Rechner benötigen
+Docker Compose zur Verwaltung aller benötigten Dienste. Auf Ihrem Rechner benötigen
 Sie daher lediglich:
 
  1. Eine beliebige IDE, empfohlen [Visual Studio Code](https://code.visualstudio.com/)
@@ -109,7 +109,7 @@ Software ist. 😊 Alternativ können Sie unter Linux auch [Podman](https://podm
 statt Docker verwenden.
 
 Zum Starten der Anwendung rufen Sie lediglich in einer Konsole das Skript
-`start-docker-dev.sh` (Linux und Mac) bzw. `start-docker-dev.bat` auf zbd
+`start-docker-dev.sh` (Linux und Mac) bzw. `start-docker-dev.bat` auf und
 bestätigen die Hinweise des Skripts mit Enter. Mit Strg+C können Sie die
 Anwendung wieder stoppen.
 
