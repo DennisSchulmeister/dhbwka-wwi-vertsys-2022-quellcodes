@@ -43,8 +43,6 @@ export default class SongService {
             if (query.songwriters)  queryDoc.songwriters  = query.songwriters;
         }
 
-console.log(queryDoc);
-
         let cursor = this._songs.find(queryDoc, {
             sort: {
                 name: 1,
