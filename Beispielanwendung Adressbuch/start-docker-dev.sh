@@ -21,7 +21,7 @@ API_URL="http://localhost:3000"
 WEB_URL="http://localhost:8080"
  DB_URL="http://localhost:8081"
 
-if [ $GITPOD_WORKSPACE_URL != "" ]; then
+if [ "$GITPOD_WORKSPACE_URL" != "" ]; then
     # Unter gitpod.io laufen die Services in der Cloud
     export API_URL=${GITPOD_WORKSPACE_URL//"https://"/"https://3000-"}
     export WEB_URL=${GITPOD_WORKSPACE_URL//"https://"/"https://8080-"}
@@ -57,7 +57,7 @@ echo -e "${BOLD}Bei Fehlern in der Anwendung bitte hier die Log-Ausgaben prüfen
 confirm
 echo
 
-docker-compose -f docker-compose.dev.yml up --attach backend
+docker-compose -f docker-compose.dev.yml up --attach
 
 #echo
 #echo "Zum Stoppen der Container folgenden Befehl eingeben:"
