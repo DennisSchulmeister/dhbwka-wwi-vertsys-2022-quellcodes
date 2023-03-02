@@ -60,7 +60,13 @@ echo -e "${BOLD}Bei Fehlern in der Anwendung bitte hier die Log-Ausgaben prüfen
 confirm
 echo
 
-docker-compose -f docker-compose.dev.yml up --attach
+if [ "$GITPOD_WORKSPACE_URL" != "" ]; then
+    # GitPod.io 02.03.2023: --attach benötigt einen Servicenamen!
+    docker-compose -f docker-compose.dev.yml up --attach backend
+else
+    # Lokal unter Linux 02.03.2023: "--attach backend" startet nur den Backend-Service! :-(
+    docker-compose -f docker-compose.dev.yml up --attach
+fi
 
 #echo
 #echo "Zum Stoppen der Container folgenden Befehl eingeben:"
