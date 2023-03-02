@@ -35,7 +35,7 @@ if [ "$GITPOD_WORKSPACE_URL" != "" ]; then
     echo
     echo -ne "$BOLD"
     echo "ACHTUNG! ACHTUNG! ACHTUNG!"
-    echo "Bitte daran denken, in Gitpod den Port 3000 auf Public zu setzen!"
+    echo "Bitte daran denken, in Gitpod die Ports 3000, 4000, 8080 und 8081 auf Public zu setzen!"
     echo "Ansonsten kann das Frontend den Backend-Webserivce nicht aufrufen, da GitPod die Zugriffe blockiert!"
     echo -ne "$RESET$RED"
     echo "======================================================================================================="
