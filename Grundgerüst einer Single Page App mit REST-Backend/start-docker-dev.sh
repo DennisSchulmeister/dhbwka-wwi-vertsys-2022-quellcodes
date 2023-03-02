@@ -49,7 +49,7 @@ echo
 echo -e " » ${BOLD}Backend:${RESET}  $API_URL"
 echo -e " » ${BOLD}Frontend:${RESET} $WEB_URL"
 echo -e " » ${BOLD}DB-Admin:${RESET} $DB_URL"
-echo -e " » ${BOLD}Gateway:${RESET} $GW_URL    ← Produktivsetup der App"
+echo -e " » ${BOLD}Gateway:${RESET}  $GW_URL/app    ← Produktivsetup der App"
 confirm
 
 # Container starten
