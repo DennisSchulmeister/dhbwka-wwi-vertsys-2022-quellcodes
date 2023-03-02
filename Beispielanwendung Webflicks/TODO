@@ -1,18 +1,24 @@
 1. Nachbauen der alten Webflix-Anwendung als Microservice-Architektur
+
 2. Hinzufügen eines weiteren ganz kleinen Microservices z.B. für Bewertungen oder Empfehlungen
+
 3. Integration des Apache Apisix API-Gateways
     - Basiert ebenfalls auf Nginx
     - Bietet aber viele Plugins z.B. für Authentifizierung, Logging, ...
     - Dynamische Konfiguration via API in Datenbank abgelegt
     - Vordefinierte Routen müssen daher per API-Aufruf angelegt werden
     - Routingregeln können jedoch im laufenden Betrieb leichter (programmatisch) angepasst werden
+
 4. Integration des Keycloud OAuth Servers oder besser SuperTokens (https://supertokens.com/)
     - Zwei Endanwenderrollen: Kinderprogramm, Reguläres Programm
+
 5. Integration von Grafana Dashboard für technische und fachliche Metriken
     - Technische Metriken evtl. über Apisix ermittelbar?
     - Fachliche Metriken, z.B. beliebte Serien usw.
+
 6. Integration von Grafana Loki für Log Aggregation
     - Darstellung im Grafana Dashboard
+
 7. Integration von Grafana Tempo oder Jaeger Tracing
     - Eventuell ist Grafana Tempo besser, da ebenfalls ins Grafana Dashboard integriert
     - Dadurch lassen sich Logs, Metriken und Traces leichter zusammenführen

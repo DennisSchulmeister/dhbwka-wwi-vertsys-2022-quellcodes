@@ -77,6 +77,11 @@ services:
         restart: always
         ports:
             - 8080:81
+        environment:
+            API_URL: ${API_URL:-http://backend:3000/}
+            FRONTEND_URL: ${FRONTEND_URL:-http://frontend:80/}
+        deploy:
+            replicas: 2
 
 volumes:
     dbdata:

@@ -50,10 +50,10 @@ server {
 
     # Proxy-Weiterleitungsregeln
     location /app/ {
-        proxy_pass  http://frontend:80/;
+        proxy_pass  ${FRONTEND_URL};
     }
 
     location /api/ {
-        proxy_pass  http://backend:3000/;
+        proxy_pass  ${API_URL};
     }
 }

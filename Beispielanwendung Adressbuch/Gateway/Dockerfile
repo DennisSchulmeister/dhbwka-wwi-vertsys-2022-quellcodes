@@ -1,7 +1,8 @@
 # syntax=docker/dockerfile:1
 
 FROM nginx:alpine
-COPY default.conf /etc/nginx/conf.d
+RUN mkdir /etc/nginx/templates
+COPY default.conf.template /etc/nginx/templates
 
 # Ggf. hier weitere COPY-Anweisungen einbauen, um statische Webinhalte nach
 # /usr/share/nginx/html zu kopieren, falls der Gateway-Server auch eine

@@ -117,7 +117,8 @@ Folgende URLs können Sie zum Testen der Anwendung verwenden:
 
  * Backend-Service direkt: http://localhost:3000
  * Backend-Service über API-Gateway: http://localhost:8080/api
- * Frontend: http://localhost:8080
+ * Frontend direkt: http://localhost:4000
+ * Frontend über API-Gateway: http://localhost:8080/app
  * Datenbank-Admin: http://localhost:8081
 
 Die Services starten automatisch neu, wenn eine Codeänderung erkannt wird.
@@ -139,7 +140,8 @@ Anwendung im Entwicklungs- oder Produktivmodus gestartet werden kann:
      1. MongoDB (von Außen nicht erreichbar)
      2. MongoDB Admin GUI (erreichbar auf http://localhost:8081)
      3. Backend (erreichbar auf http://localhost:3000)
-     4. Frontend (erreichbar auf http://localhost:8080)
+     4. Frontend (erreichbar auf http://localhost:4000)
+     5. Gateway (erreichbar auf http://localhost:8080)
 
  Frontend und Backend führend den lokalen Quellcode in einer einfachen
  Node.js-Laufzeitumgebung aus. Änderungen werden dadurch sofort aktiv, wobei

@@ -18,14 +18,16 @@ echo
 
 # URLs der einzelnen Services ermitteln, um sie dem Anwender anzeigen zu können
 API_URL="http://localhost:3000"
-WEB_URL="http://localhost:8080"
+WEB_URL="http://localhost:4000"
  DB_URL="http://localhost:8081"
+ GW_URL="http://localhost:8080/app"
 
 if [ "$GITPOD_WORKSPACE_URL" != "" ]; then
     # Unter gitpod.io laufen die Services in der Cloud
     export API_URL=${GITPOD_WORKSPACE_URL//"https://"/"https://3000-"}
-    export WEB_URL=${GITPOD_WORKSPACE_URL//"https://"/"https://8080-"}
+    export WEB_URL=${GITPOD_WORKSPACE_URL//"https://"/"https://4000-"}
     export  DB_URL=${GITPOD_WORKSPACE_URL//"https://"/"https://8081-"}
+    export  GW_URL=${GITPOD_WORKSPACE_URL//"https://"/"https://8080-"}
 
     echo -ne "$RED"
     echo "======================================================================================================="
@@ -47,6 +49,7 @@ echo
 echo -e " » ${BOLD}Backend:${RESET}  $API_URL"
 echo -e " » ${BOLD}Frontend:${RESET} $WEB_URL"
 echo -e " » ${BOLD}DB-Admin:${RESET} $DB_URL"
+echo -e " » ${BOLD}Gateway:${RESET} $GW_URL    ← Produktivsetup der App"
 confirm
 
 # Container starten
