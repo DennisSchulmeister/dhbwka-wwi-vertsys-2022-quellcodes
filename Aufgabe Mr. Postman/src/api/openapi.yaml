@@ -97,6 +97,13 @@ paths:
       - Song
       responses:
         "201":
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                URL für neuen Song:
+                  value: http://localhost:3000/song/9651efba621795ef5fe45231a
           content:
             application/json:
               schema:
