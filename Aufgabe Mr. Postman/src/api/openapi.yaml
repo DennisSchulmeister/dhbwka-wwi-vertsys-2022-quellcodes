@@ -1,9 +1,11 @@
+---
 openapi: 3.0.0
 info:
   title: "Aufgabe: Hey, Mr. Postman"
-  description: "Dieser Webservice dient dazu, die typischen HTTP-Aufrufe bei \
-    \ Verwendung eines REST-Webservices mit einem Werkzeug wie Postman (https://www.postman.com/) \
-    \ auszuprobieren. Hierfür wird eine simple API zur Verwaltung von Songs angeboten."
+  version: "1.0"
+  description: "Dieser Webservice dient dazu, die typischen HTTP-Aufrufe bei  Verwendung\
+    \ eines REST-Webservices mit einem Werkzeug wie Postman (https://www.postman.com/)\
+    \  auszuprobieren. Hierfür wird eine simple API zur Verwaltung von Songs angeboten."
   contact:
     name: Dennis Schulmeister-Zimolong
     url: https://www.wpvs.de
@@ -11,23 +13,15 @@ info:
   license:
     name: CC-BY-4.0
     url: https://creativecommons.org/licenses/by/4.0/deed.de
-  version: "1.0"
 servers:
 - url: http://localhost:3000
-tags:
-- name: Index
-- name: Song
-
 paths:
   /:
     get:
       tags:
       - Index
-      summary: Wurzeladresse des Webservices
-      description: Liefert eine HATEOAS-Übersicht aller collections
       responses:
         "200":
-          description: OK
           content:
             application/json:
               schema:
@@ -35,47 +29,46 @@ paths:
                 items:
                   $ref: '#/components/schemas/HATEOAS_Collection'
                 x-content-type: application/json
-
+          description: OK
+      summary: Wurzeladresse des Webservices
+      description: Liefert eine HATEOAS-Übersicht aller collections
   /song:
     get:
       tags:
-        - Song
-      summary: Song-Collection
-      description: Eine Liste von Songs
+      - Song
       parameters:
       - name: search
-        in: query
-        required: false
         description: Suchbegriff (alle anderen Parameter werden dann ignoriert)
         schema:
           type: string
-      - name: artist
         in: query
         required: false
+      - name: artist
         description: Künstler (exakte Übereinstimmung)
         schema:
           type: string
-      - name: name
         in: query
         required: false
+      - name: name
         description: Songname (exakte Übereinstimmung)
         schema:
           type: string
-      - name: releaseYear
         in: query
         required: false
+      - name: releaseYear
         description: Jahr der Veröffentlichung (exakte Übereinstimmung)
         schema:
           type: integer
-      - name: songwriters
         in: query
         required: false
+      - name: songwriters
         description: Songschreiber (exakte Übereinstimmung)
         schema:
           type: string
+        in: query
+        required: false
       responses:
         "200":
-          description: OK
           content:
             application/json:
               schema:
@@ -83,103 +76,137 @@ paths:
                 items:
                   $ref: '#/components/schemas/Song'
                 x-content-type: application/json
-
+          description: OK
+      summary: Song-Collection
+      description: Eine Liste von Songs
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Song'
+            examples:
+              Song anlegen:
+                value:
+                  artist: Bruce Springsteen
+                  name: If I Was the Priest
+                  release_year: 2020
+                  songwriters: Bruce Springsteen
+        required: true
+      tags:
+      - Song
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Song'
+              examples:
+                Angelegter Song:
+                  value:
+                    _id: 9651efba621795ef5fe45231a
+                    artist: Bruce Springsteen
+                    name: If I Was the Priest
+                    release_year: 2020
+                    songwriters: Bruce Springsteen
+          description: Angelegter Song inklusive ID.
+      summary: Song hinzufügen
+      description: Legt einen neuen Song an.
   /song/{id}:
     get:
       tags:
       - Song
-      summary: Song lesen
-      description: Liest einen einzelnen Song vom Server.
       parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
+      - style: simple
         explode: false
+        name: id
         schema:
           type: string
+        in: path
+        required: true
       responses:
         "200":
-          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Song'
+          description: OK
         "404":
           description: Not Found
+      summary: Song lesen
+      description: Liest einen einzelnen Song vom Server.
     put:
-      tags:
-      - Song
-      summary: ""
-      description: "Überschreibt einen vorhandenen Song auf dem Server. Bis auf die\
-        \ ID können alle Felder geändert werden. Der Versuch, die ID zu ändern, wird\
-        \ vom Server stillschweigend ignoriert."
-      parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Song'
+      tags:
+      - Song
+      parameters:
+      - style: simple
+        explode: false
+        name: id
+        schema:
+          type: string
+        in: path
+        required: true
       responses:
         "200":
-          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Song'
+          description: OK
         "404":
           description: Not Found
+      summary: Song ändern
+      description: "Überschreibt einen vorhandenen Song auf dem Server. Bis auf die\
+        \ ID können alle Felder geändert werden. Der Versuch, die ID zu ändern, wird\
+        \ vom Server stillschweigend ignoriert."
     delete:
       tags:
       - Song
-      summary: Song löschen
-      description: Löscht einen Song auf dem Server.
       parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
+      - style: simple
         explode: false
+        name: id
         schema:
           type: string
+        in: path
+        required: true
       responses:
         "200":
           description: OK
         "404":
           description: Not Found
+      summary: Song löschen
+      description: Löscht einen Song auf dem Server.
     patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Song'
       tags:
       - Song
+      parameters:
+      - style: simple
+        explode: false
+        name: id
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
       summary: Einzelne Songfelder ändern
       description: "Ändert einzelne Felder eines vorhandenen Songs. Zulässig sind\
         \ alle Felder bis auf die ID, da diese nachträglich nicht mehr verändert werden\
         \ darf."
-      parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Song'
-      responses:
-        "200":
-          description: OK
-        "404":
-          description: Not Found
-
 components:
   schemas:
     HATEOAS_Collection:
@@ -192,7 +219,6 @@ components:
           $ref: '#/components/schemas/HATEOAS_Link'
         create:
           $ref: '#/components/schemas/HATEOAS_Link'
-
     HATEOAS_Resource:
       title: HATEOAS-Links einer Resource
       type: object
@@ -205,7 +231,6 @@ components:
           $ref: '#/components/schemas/HATEOAS_Link'
         delete:
           $ref: '#/components/schemas/HATEOAS_Link'
-
     HATEOAS_Link:
       title: HATEOAS-Link
       type: object
@@ -218,9 +243,10 @@ components:
           type: array
           items:
             type: string
-
     Song:
       title: Song
+      required:
+      - name
       type: object
       properties:
         _links:
@@ -235,13 +261,12 @@ components:
           type: integer
         songwriters:
           type: string
-      required:
-        - name
       example:
-        _id: "621ff9a936997df5baba746e"
-        artist: "Elton John"
-        name: "Circle of Life"
+        _id: 621ff9a936997df5baba746e
+        artist: Elton John
+        name: Circle of Life
         release_year: 1994
-        songwriters: "Tim Rice"
-
-  securitySchemes: {}
+        songwriters: Tim Rice
+tags:
+- name: Index
+- name: Song
