@@ -183,8 +183,8 @@ paths:
         in: path
         required: true
       responses:
-        "200":
-          description: OK
+        "204":
+          description: No Content
         "404":
           description: Not Found
       summary: Song löschen
@@ -252,8 +252,6 @@ components:
             type: string
     Song:
       title: Song
-      required:
-      - name
       type: object
       properties:
         _links:

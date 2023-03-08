@@ -100,7 +100,7 @@ export default class SongService {
             $set: {},
         }
 
-        if (song.artist)       updateDoc.$set.artist       = song.aritst;
+        if (song.artist)       updateDoc.$set.artist       = song.artist;
         if (song.name)         updateDoc.$set.name         = song.name;
         if (song.release_year) updateDoc.$set.release_year = song.release_year;
         if (song.songwriters)  updateDoc.$set.songwriters  = song.songwriters;
