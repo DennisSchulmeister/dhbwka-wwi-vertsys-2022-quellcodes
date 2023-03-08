@@ -212,8 +212,8 @@ paths:
         schema:
           type: string
       responses:
-        "200":
-          description: OK
+        "204":
+          description: No Content
         "404":
           description: Not Found
 
@@ -273,9 +273,6 @@ components:
         email:
           type: string
           pattern: "(.*@.*\\..*)?"
-      required:
-        - first_name
-        - last_name
       example:
         _id: "621ff9a936997df5baba746e"
         first_name: "Fox"
