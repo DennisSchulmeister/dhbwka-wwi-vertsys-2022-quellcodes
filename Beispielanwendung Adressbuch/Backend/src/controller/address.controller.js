@@ -11,7 +11,7 @@ import RestifyError from "restify-errors";
  */
 export default class AddressController {
     /**
-     * Konstruktor. Hier werden die URL-Handler registrert.
+     * Konstruktor. Hier werden die URL-Handler registriert.
      *
      * @param {Object} server Restify Serverinstanz
      * @param {String} prefix Gemeinsamer Prefix aller URLs
@@ -37,7 +37,7 @@ export default class AddressController {
      * hinzugefügt, damit ein Client erkennen kann, wie er die Entität lesen,
      * ändern oder löschen kann.
      *
-     * @param {Object} entity Zu verändernder Datensatz.
+     * @param {Object} entity Zu verändernder Datensatz
      */
     _insertHateoasLinks(entity) {
         let url = `${this._prefix}/${entity._id}`;
