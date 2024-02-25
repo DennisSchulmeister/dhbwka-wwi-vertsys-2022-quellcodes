@@ -11,7 +11,7 @@ import RestifyError from "restify-errors";
  */
 export default class SongController {
     /**
-     * Konstruktor. Hier werden die URL-Handler registrert.
+     * Konstruktor. Hier werden die URL-Handler registriert.
      *
      * @param {Object} server Restify Serverinstanz
      * @param {String} prefix Gemeinsamer Prefix aller URLs
